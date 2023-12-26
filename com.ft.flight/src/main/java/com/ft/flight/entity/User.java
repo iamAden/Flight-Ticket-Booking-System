@@ -29,22 +29,18 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Booking> bookings;
 
-    @Enumerated(EnumType.STRING)
-    private UserRole role;
-
     @Column(nullable = false)
     private String passportNumber;
 
     public User() {
     }
 
-    public User(String firstname, String lastname, String email, String username, String password, UserRole role) {
+    public User(String firstname, String lastname, String email, String username, String password) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
         this.username = username;
         this.password = password;
-        this.role=role;
     }
 
     // Getters and Setters
@@ -105,7 +101,4 @@ public class User {
         this.bookings = bookings;
     }
 
-    public UserRole getRole() {
-        return role;
-    }
 }
