@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/Flight-Ticket-Booking-System.iml" filepath="$PROJECT_DIR$/.idea/Flight-Ticket-Booking-System.iml" />
       <module fileurl="file://$PROJECT_DIR$/com.ft.flight/com.ft.flight.iml" filepath="$PROJECT_DIR$/com.ft.flight/com.ft.flight.iml" />
+      <module fileurl="file://$PROJECT_DIR$/com.ft.flight/frontend/frontend.iml" filepath="$PROJECT_DIR$/com.ft.flight/frontend/frontend.iml" />
     </modules>
   </component>
 </project>
