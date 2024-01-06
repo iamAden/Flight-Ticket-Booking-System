@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Flight Booking System</title>
+        <link rel="stylesheet" href="style.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    </head>
+    <body>
+        <section class="header">
+            <nav>
+                <img src="/images/logoP.png">
+                <div class="nav-links" d="navLinks">
+                    <i class="fa fa-times" onclick="hideMenu()"></i>
+                    <ul>
+                        <li><a href="/home">Home</a></li>
+                        <li><a href="/about">About</a></li>
+                        <li><a href="/contact">Contact</a></li>
+                        <li><a href="/booking">Booking</a></li>
+                    </ul>
+                </div>
+                <i class="fa fa-bars" onclick="showMenu()"></i>
+            </nav>
+
+
+
+            <div class="text-box">
+                <h1>Flight Booking System</h1>
+                <p>Welcome to FlightHub, your gateway to hassle-free travel! <br>
+                Discover seamless flight bookings with just a few clicks. <br>
+                Wherever you're headed, start your journey here.
+            </p>
+            <a href="/booking" class="hero-btn">Booking Now</a>
+            </div>
+
+        </section>
+        <!---------------Course--------->
+        <section class="course">
+            <h1>Service We Offer</h1>
+            <p>Discover a range of services tailored to enhance your travel experience, <br>
+            from hassle-free flight booking and flexible itineraries to personalised <br>
+            travel assistance and seamless journey management.</p>
+
+            <div class="row">
+                <div class="course-col">
+                    <h3>Flight Search</h3>
+                    <h5>Effortlessly explore available flights, 
+                    compare options, and find the perfect itinerary tailored to your preferences and travel plans.</h5>
+                </div>
+                <div class="course-col">
+                    <h3>Ticket Booking</h3>
+                    <h5>Securely reserve your chosen flights with ease, 
+                    ensuring a smooth and stress-free booking process from selection to confirmation.</h5>
+                </div>
+                <div class="course-col">
+                    <h3>Booking Cancellation</h3>
+                    <h5>Need flexibility? Easily manage your bookings with our hassle-free cancellation service, 
+                    ensuring convenience and peace of mind for unexpected changes.</h5>
+                </div>
+            </div>
+        </section>
+
+        <!------------Call To Action------->
+        <section class="cta">
+            <h1>Have questions about bookings, flight details or anything else?</h1>
+            <a href="/contact" class="hero-btn">CONTACT US</a>
+        </section>
+
+        <!------------Footer------->
+        <section class="footer">
+            <h4>About Us</h4>
+            <p>FlightHub is a project developed for WIA1002  Data Structure <br>
+            using SpringBoot, MySQL, and HTML.</p>
+            <div class="icons">
+                <a href="https://github.com/iamAden/Flight-Ticket-Booking-System" target="_blank">
+                    <i class="fa fa-github"></i>
+                </a>
+            </div>
+            <p>Made with <i class="fa fa-heart-o"></i> by DS Group 40</p>
+        </section>
+
+        <!-----------JavaScriptfor Toggle Menu-------->
+       <script>
+        var navLinks = document.getElementById("navLinks");
+        function showMenu(){
+            navLinks.style.right = "0";
+        }
+        function hideMenu(){
+            navLinks.style.right = "-200px";
+        }
+       </script>
+    </body>
+</html>
