@@ -1,4 +1,4 @@
-1. download the repository and extract to C:/
+1. download the repository 
 
 2. Setting up MySQL:
     - Download MySQL https://dev.mysql.com/downloads/installer/
