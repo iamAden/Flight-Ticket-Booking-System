@@ -1,0 +1,140 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins', sans-serif;
+  }
+
+.swiper-container{
+  width: 1150px;
+  margin:0 auto;
+  background-color: #19346e;
+  padding: 50px 20px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 20px;
+  }
+  .swiper-button-next,
+  .swiper-button-prev {
+    font-size: 24px; /* Adjust the font size as needed */
+    color: #fff; /* Adjust the color as needed */
+    background: #19346e;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+  }
+
+section .swiper-card{
+  display: flex;
+  justify-content: center;
+}
+.swiper-card{
+  width: 50px;
+  position: relative;
+  border-radius: 10px;
+  background: white;
+  display: flex; /* Center content vertically */
+  align-items: center;
+  margin-right: 20px;
+}
+
+.card-content{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding: 30px;
+}
+
+  .price, .date{
+    font-size: 18px;
+    font-weight: 500;
+    color:#333;
+    text-align:center;
+  }
+
+  .search-results {
+    max-width: 1000px;
+    margin: 20px auto;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+
+  .flight-item {
+    border-bottom: 1px solid #e0e0e0;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .flight-item img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+
+  .flight-details {
+    flex: 1;
+    margin-left: 15px;
+    
+  }
+
+  .flight-details h2 {
+    font-size: 18px;
+    margin: 0 0 5px;
+  }
+
+  .flight-details p {
+    font-size: 14px;
+    margin: 0;
+  }
+
+  .flight-price {
+    font-size: 20px;
+    font-weight: bold;
+    color: #19346e;
+    margin-right: 20px;
+  }
+
+  .flight-number {
+    font-size: 14px;
+    margin-top: 5px;
+    color: #555; /* Adjust color as needed */
+  }
+
+  .available-seats {
+    font-size: 14px;
+    color: #4CAF50;
+    margin-top: 5px;
+  }
+
+  .herob-btn{
+    display: inline-block;
+    text-decoration: none;
+    color: #fff;
+    border: 1px solid #fff;
+    padding: 12px 34px;
+    font-size: 13px;
+    background: transparent;
+    position: relative;
+    cursor: pointer;
+}
+.herob-btn:hover{
+    border: 1px solid #19346e;
+    background: #19346e;
+    transition: 1s;
+}
+
+.blue-btn{
+  border: 1px solid #19346e;
+  background: transparent;
+  color: #19346e;
+}
+.blue-btn:hover{
+  color:#fff ;
+}

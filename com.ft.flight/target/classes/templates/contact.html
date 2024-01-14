@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Flight Booking System</title>
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    </head>
+    <body>
+        <section class="sub-header">
+            <nav>
+                <a href="/home"><img src="images/logoP.png"></a>
+                <div class="nav-links" id="navLinks">
+                    <i class="fa fa-times" onclick="hideMenu()"></i>
+                    <ul>
+                        <li><a href="/home">Home</a></li>
+                        <li><a href="/about">About</a></li>
+                        <li><a href="/contact">Contact</a></li>
+                        <li><a href="/booking">Booking</a></li>
+                    </ul>
+                </div>
+                <i class="fa fa-bars" onclick="showMenu()"></i>
+            </nav>
+            <h1>Contact Us</h1>
+        </section>
+        <!----------Contact us--------->
+        <section class="location">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15935.655873209205!2d101.6573756!3d3.1174591!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31cc49720ec81b9b%3A0x58d63e7d8749e9d8!2sFaculty%20of%20Computer%20Science%20and%20Information%20Technology%20(FCSIT)!5e0!3m2!1sen!2smy!4v1703870274292!5m2!1sen!2smy" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </section>
+
+        <section class="contact-us">
+            <div class="row">
+                <div class="contact-col">
+                    <div>
+                        <i class="fa fa-home"></i>
+                            <span>
+                                <h5>University of Malaya, 50603 Kuala Lumpur,</h5>
+                                <p> Federal Territory of Kuala Lumpur</p>
+                            </span>
+                    </div>
+                    <div>
+                        <i class="fa fa-phone"></i>
+                            <span>
+                                <h5>+6035722347</h5>
+                                <p>Monday to Saturday, 10AM to 6PM</p>
+                            </span>
+                    </div>
+                    <div>
+                        <i class="fa fa-envelope-o"></i>
+                            <span>
+                                <h5>info@flighthub.com</h5>
+                                <p>Email us your query</p>
+                            </span>
+                    </div>
+                </div>
+                <div class="contact-col">
+                    <form action="" >
+                        <input type="text" placeholder="Enter your name" required>
+                        <input type="email" placeholder="Enter email address" required>
+                        <input type="text" placeholder="Enter your subject" required>
+                        <textarea rows="8" placeholder="Message" required></textarea>
+                        <button type="submit" class="hero-btn red-btn">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+         <!------------Footer------->
+        <section class="footer">
+            <h4>About Us</h4>
+            <p>FlightHub is a project developed for WIA1002  Data Structure <br>
+                using SpringBoot, MySQL, and HTML.</p>
+            <div class="icons">
+                <a href="https://github.com/iamAden/Flight-Ticket-Booking-System" target="_blank">
+                    <i class="fa fa-github"></i>
+                </a>
+            </div>
+            <p>Made with <i class="fa fa-heart-o"></i> by DS Group 40</p>
+        </section>
+
+
+        <!-----------JavaScriptfor Toggle Menu-------->
+       <script>
+        var navLinks = document.getElementById("navLinks");
+        function showMenu(){
+            navLinks.style.right = "0";
+        }
+        function hideMenu(){
+            navLinks.style.right = "-200px";
+        }
+       </script>
+    </body>
+</html>
