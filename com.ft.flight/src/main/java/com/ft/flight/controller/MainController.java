@@ -1,24 +1,32 @@
 package com.ft.flight.controller;
 
-import com.ft.flight.entity.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.ft.flight.entity.Booking;
+import com.ft.flight.entity.BookingStatus;
+import com.ft.flight.entity.Flight;
+import com.ft.flight.entity.User;
 import com.ft.flight.repository.BookingRepository;
 import com.ft.flight.repository.FlightRepository;
 import com.ft.flight.repository.UserRepository;
 import com.ft.flight.service.FlightService;
 import com.ft.flight.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
-
-
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequestMapping("/")
@@ -89,12 +97,6 @@ public class MainController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/date")
-    public ModelAndView date() {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("date.html");
-        return modelAndView;
-    }
 
     @PostMapping("/register")
     public ResponseEntity<Map<String, String>> Register(@RequestBody RegisterCredential registerCredential) {
@@ -150,16 +152,29 @@ public class MainController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/bookings/{id}")
-    public Booking getBookingById(@PathVariable String id) {
-        return bookingRepository.findById(Long.valueOf(id)).orElse(null);
+
+    @GetMapping("/search")
+    public ResponseEntity<Map<String, Object>> searchFlights(
+        @RequestParam String date,
+        @RequestParam String source,
+        @RequestParam String destination) {
+    Map<String, Object> response = new HashMap<>();
+    List<Flight> flights = flightService.searchFlightsByDateAndSourceAndDestination(date, source, destination);
+
+    response.put("redirect", "/date"); // Specify the redirect URL
+    response.put("flights", flights);
+
+    return ResponseEntity.ok(response);
+}
+
+
+    @RequestMapping(value = "/date")
+    public ModelAndView date() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("date.html");
+        return modelAndView;
     }
 
-    @PostMapping("/search")
-    public ResponseEntity<List<Flight>> findFlight(@RequestBody FlightCredentials flightCredentials) {
-        List<Flight> flights = flightRepository.findByDateAndSourceAndDestination(flightCredentials.getDate(), flightCredentials.getSource(), flightCredentials.getDestination());
-        return ResponseEntity.ok(flights);
-    }
 
     @GetMapping("/flight/{flightId}")
     public Flight getFlightById(@PathVariable Long flightId) {
@@ -254,15 +269,15 @@ class LoginCredential {
 }
 
 class FlightCredentials {
-    private Date date;
+    private String date;
     private String source;
     private String destination;
 
-    public Date getDate(){
+    public String getDate(){
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 

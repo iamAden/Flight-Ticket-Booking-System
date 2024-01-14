@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-    <html lang="en">
+    <html lang="en" xmlns:th="http://www.thymeleaf.org">
         <head>
             <meta charset="UTF-8">
             <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -186,48 +186,55 @@
                     </div>
                     <div class="swiper-button-next"></div>
                     <div class="swiper-button-prev"></div>
-         
                 </div>
 
-                <div class="search-results">
-    
-                    <div class="flight-item">
-                      <img src="images/flight04.jpg" alt="Flight Image">
-                      <div class="flight-details">
-                        <h2>Flight from KL to Singapore &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FlightHub001</h2>
-                        <p>Departure: 2024-01-31 08:00 AM</p>
-                        <p>Arrival: 2024-01-11 09:00 AM</p>
-                        <p class="available-seats">Available Seats: 5</p>
-                      </div>
-                      <div class="flight-price">RM68</div>
-                      <button class="herob-btn blue-btn" onclick="bookingForm()">Book Now</button>
-                    </div>
-                
-                    <div class="flight-item">
-                      <img src="images/flight04.jpg" alt="Flight Image">
-                      <div class="flight-details">
-                        <h2>Flight from KL to Singapore &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FlightHub002</h2>
-                        <p>Departure: 2024-01-11 01:00 PM</p>
-                        <p>Arrival: 2024-01-11 02:00 PM</p>
-                        <p class="available-seats">Available Seats: 0</p>
-                      </div>
-                      <div class="flight-price">RM70</div>
-                      <button class="herob-btn blue-btn" onclick="bookingForm()">Book Now</button>
-                    </div>
-                
-                    <div class="flight-item">
-                      <img src="images/flight04.jpg" alt="Flight Image">
-                      <div class="flight-details">
-                        <h2>Flight from KL to Singapore &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FlightHub001</h2>
-                        <p>Departure: 2024-01-11 09:00 PM</p>
-                        <p>Arrival: 2024-01-11 10:00 PM</p>
-                        <p class="available-seats">Available Seats: 1</p>
-                      </div>
-                      <div class="flight-price">RM72</div>
-                      <button class="herob-btn blue-btn" onclick="bookingForm()">Book Now</button>
-                    </div>
-                
-                  </div>
+                <div id="searchResultsContainer" class="search-results"></div>
+
+                <script>
+                    function createFlightItem(flight) {
+                        var flightItem = "<div class='flight-item'>" +
+                            "<div class='flight-details'>" +
+                            "<h2>" + flight.name + "</h2>" +
+                            "<p>Departure: " + flight.departure + "</p>" +
+                            "<p>Arrival: " + flight.arrival + "</p>" +
+                            "<p class='available-seats'>Available Seats: " + flight.availableSeats + "</p>" +
+                            "</div>" +
+                            "<div class='flight-price'>RM" + flight.price + "</div>" +
+                            "<button class='herob-btn blue-btn' onclick='bookingForm()'>Book Now</button>" +
+                            "</div>";
+
+                        return flightItem;
+                    }
+
+                    // // Assuming the response object contains 'flights' array
+                    // var response = /* Populate this object with your API response */
+                    // var flights = response.flights;
+
+                    // // Populate flights if available
+                    // if (flights && flights.length > 0) {
+                    //     var searchResultsContainer = document.getElementById('searchResultsContainer');
+                    //     flights.forEach(function (flight) {
+                    //         searchResultsContainer.innerHTML += createFlightItem(flight);
+                    //     });
+                    // }
+
+                    fetch('/search?date=2024-02-11&source=Kuala Lumpur international Airport&destination=Alor Setar Airport')
+                    .then(response => response.json())
+                    .then(data => {
+                        var flights = data.flights;
+
+                        if (flights && flights.length > 0) {
+                            var searchResultsContainer = document.getElementById('searchResultsContainer');
+                            flights.forEach(function (flight) {
+                                searchResultsContainer.innerHTML += createFlightItem(flight);
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Fetch error:', error);
+                    });
+                </script>
+
             </section>
         
         </body>
@@ -248,5 +255,5 @@
         </script>
         <script src="js/swiper-bundle.min.js"></script>
         <script src="js/script.js"></script>
-    
+        
     </html>

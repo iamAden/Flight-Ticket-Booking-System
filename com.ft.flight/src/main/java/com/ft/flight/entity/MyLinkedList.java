@@ -3,7 +3,15 @@ package com.ft.flight.entity;
 import org.springframework.stereotype.Component;
 
 @Component
-public class MyLinkedList<E>{
+public class MyLinkedList{
+    public static class Node {
+        public Flight data;
+        public Node next;
+        public Node(Flight data){
+            this.data=data;
+            this.next=null;
+        }
+    }
     private Node head;
     private Node tail;
     private int size;
@@ -28,7 +36,7 @@ public class MyLinkedList<E>{
         }
         size++;
     }
-    public void addLast(Node newNode){
+    public void add(Node newNode){
         //if list is empty
         if(head==null){
             head = tail = newNode;
@@ -39,11 +47,11 @@ public class MyLinkedList<E>{
         }
         size++;
     }
-    public E removeFirst(){
+    public Flight removeFirst(){
         Node temp = head;
         head = head.next;
         size--;
-        return (E)temp.data;
+        return temp.data;
     }
     @Override
     public String toString(){
@@ -57,7 +65,7 @@ public class MyLinkedList<E>{
         }
         return sb.toString();
     }
-    public boolean contains(E data){
+    public boolean contains(Flight data){
         Node temp=head;
         while(temp!=null){
             //matches
@@ -75,10 +83,10 @@ public class MyLinkedList<E>{
         size=0;
         System.out.println("The list is cleared.");
     }
-    public void combine(MyLinkedList<E> otherList){
+    public void combine(MyLinkedList otherList){
         Node temp=otherList.head;
         while(temp!=null){
-            this.addLast(temp);
+            this.add(temp);
             temp=temp.next;
         }
     }

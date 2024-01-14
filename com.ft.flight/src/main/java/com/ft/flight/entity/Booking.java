@@ -39,7 +39,7 @@ public class Booking  {
 
     @Column
     @Transient
-    private MyLinkedList<Booking> confirmedList = new MyLinkedList<>();
+    private MyLinkedList confirmedList = new MyLinkedList();
 
     @Column
     @Transient

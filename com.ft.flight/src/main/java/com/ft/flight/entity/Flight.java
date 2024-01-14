@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.sql.Time;
 import java.util.Date;
+import java.time.LocalDate;
 
 @Data
 @Entity
@@ -21,7 +22,7 @@ public class Flight {
 
     @Temporal(TemporalType.DATE)
     @Column
-    private Date date;
+    private LocalDate date;
 
     @Column
     private Time departure;
@@ -50,7 +51,7 @@ public class Flight {
     @Transient
     @OneToMany
     @JoinColumn(name = "booking")
-    private MyLinkedList<Booking> booking;
+    private MyQueue<Booking> booking;
 
 
 
@@ -120,7 +121,13 @@ public class Flight {
         this.flightName = flightName;
     }
 
+    public LocalDate getDate() {
+        return date;
+    }
 
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
 }
 
 
