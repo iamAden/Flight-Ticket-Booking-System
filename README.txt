@@ -13,9 +13,11 @@
     - run 'Create schema ftbs'
 
 4. Running the application
-    I use intellij
-    - just go to com.ft.flight/backend/src/main/java/com.ft.flight/Application.java
-    - Run Application.java
+    - open the project folder inside ur ide (vsc/intellij)(netbeans cannot)
+    - open terminal inside ur ide
+    - `cd com.ft.flight`
+    - mvn clean install (this command only need to execute once. after that when u wanna run the application u can just cd to com.ft.flight first, then run mvn spring0boot:run)
+    - mvn spring-boot:run
 
 5. Seeing the website
-    open ur browser and go to localhost:8080
+    open ur browser and go to localhost:8080/login
