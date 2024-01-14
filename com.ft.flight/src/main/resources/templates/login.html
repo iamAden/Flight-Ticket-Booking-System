@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Flight Booking System</title>
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    </head>
+    <body>
+        <section class="login-header">
+            <div class="container">
+                <div class="signin-signup">
+                    <form action="#" class="sign-in-form" id="loginForm">
+                        <h2 class="title">Sign in</h2>
+                        <div class="input-field">
+                            <i class="fa fa-user"></i>
+                            <input type="text" id="loginUsername" placeholder="Username" required/>
+                        </div>
+                        <div class="input-field">
+                            <i class="fa fa-lock"></i>
+                            <input type="password" id="loginPassword" placeholder="Password" required/>
+                        </div>    
+                        <input type="submit" id="loginButton" value="Login" class="herob-btn blue-btn">
+                        <p class="account-text">Don't have an account? <a href="#" id="signUp2">Sign up</a></p>
+                    </form>
+                    <form action="#" class="sign-up-form" id="registerForm">
+                        <h2 class="title">Register</h2>
+                        <div class="input-field">
+                            <i class="fa fa-user"></i>
+                            <input type="text" id="username" placeholder="Username" required/>
+                        </div>
+                        <div class="input-field">
+                            <i class="fa fa-envelope"></i>
+                            <input type="email" id="email" placeholder="Email" required/>
+                        </div>
+                        <div class="input-field">
+                            <i class="fa fa-lock"></i>
+                            <input type="password" id="password" placeholder="Password" required/>
+                        </div>    
+                        <input type="submit" value="Sign up" class="herob-btn blue-btn">  
+                        <p class="account-text">Already have an account? <a href="#" id="signIn2">Sign in</a></p>
+            
+                    </form>
+                </div>
+                <div class="panels-container">
+                    <div class="panel left-panel">
+                        <img src="images/logoP.png" alt="" class="panel-image">
+                        <div class="content">
+                            <h3>Welcome Back!</h3>
+                            <p>Manage bookings & explore.<br>Sign in for your next adventure!</p>
+                            <button class="hero-btn red-btn" id="signIn">Sign in</button>
+                        </div>
+                    </div>
+                    <div class="panel right-panel">
+                        <img src="images/logoP.png" alt="" class="panel-image">
+                        <div class="content">
+                            <h3>Join FlightHub Today!</h3>
+                            <p>Access deals, recommendations & more.<br>Sign up for seamless bookings!</p>
+                            <button class="hero-btn red-btn" id="signUp">Sign up</button>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            <script src="flight.js"></script>
+
+
+            <script>
+                document.getElementById('loginForm').addEventListener('submit', function (event) {
+                    event.preventDefault();
+
+                    var username = document.getElementById('loginUsername').value;
+                    var password = document.getElementById('loginPassword').value;
+
+                    var loginData = {
+                        username: username,
+                        password: password
+                    };
+                    console.log('Username:', username);
+                    console.log('Password:', password);
+                    fetch('/login', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(loginData)
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.redirect) {
+                            // Redirect to the specified URL upon successful login
+                            window.location.href = data.redirect;
+                        } else {
+                            // Handle other cases, e.g., display an error message
+                            console.error('Login error:', data.message);
+
+                            // You can access the error message in data.message
+                            // For example, you might want to display it on the page
+                            alert('Login error: ' + data.message);
+                        }
+                    })
+                    .catch(error => {
+                        // Handle fetch error
+                        console.error('Fetch error:', error);
+                    });
+                });
+            </script>
+
+            <script>
+                document.getElementById('registerForm').addEventListener('submit', function (event) {
+                    event.preventDefault();
+
+                    var username = document.getElementById('username').value;
+                    var email = document.getElementById('email').value;
+                    var password = document.getElementById('password').value;
+
+                    var registerData = {
+                        username: username,
+                        email: email,
+                        password: password
+                    };
+
+                    fetch('/register', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(registerData)
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.redirect) {
+                            // Redirect to the specified URL upon successful register
+                            window.location.href = data.redirect;
+                        } else {
+                            // Handle other cases, e.g., display an error message
+                            console.error('Register error:', data.message);
+
+                            // You can access the error message in data.message
+                            // For example, you might want to display it on the page
+                            alert('Register error: ' + data.message);
+                        }
+                    })
+                    .catch(error => {
+                        // Handle fetch error
+                        console.error('Fetch error:', error);
+                    });
+                });
+            </script>
+        </section>
+
+        <!-----------JavaScriptfor Toggle Menu-------->
+       <script>
+        var navLinks = document.getElementById("navLinks");
+        function showMenu(){
+            navLinks.style.right = "0";
+        }
+        function hideMenu(){
+            navLinks.style.right = "-200px";
+        }
+       </script>
+    </body>
+</html>

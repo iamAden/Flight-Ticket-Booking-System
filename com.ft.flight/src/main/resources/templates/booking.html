@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Flight Booking System</title>
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">  
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+        <!-- jQuery library -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <!-- Popper JS -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <!-- Latest compiled JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+
+    </head>
+    <body>
+        <section class="booking-header">
+            <nav>
+                <a href="index.html"><img src="images/logoP.png"></a>
+                <div class="nav-links" id="navLinks">
+                    <i class="fa fa-times" onclick="hideMenu()"></i>
+                    <ul>
+                        <li><a href="/home">Home</a></li>
+                        <li><a href="/about">About</a></li>
+                        <li><a href="/contact">Contact</a></li>
+                        <li><a href="/booking">Booking</a></li>
+                        <a href="/login" class="hero-btn">Logout</a>
+                    </ul>
+                </div>
+                <i class="fa fa-bars" onclick="showMenu()"></i>
+            </nav>
+                <h1>Booking</h1>
+
+                <button onclick="showSearchView()" class="hero-btn">Search a Flight</button>
+                <button onclick="showBookingHistory()" class="hero-btn">Booking History</button>
+
+                
+            <div class="raw" id="searchView">
+                <div class="search-col">
+                    <form onsubmit="redirectToSearchPage()">
+                        <input type="date" placeholder="When are you leaving?" required id="departureDate">
+                        <input type="text" placeholder="Where are you now?" required>
+                        <input type="text" placeholder="Where are you going?" required>
+                        <button type="submit" class="hero-btn">Search</button>
+                    </form>
+                    
+                </div>
+            </div>
+
+
+            
+            <div class="raw" id="historyView" style="display: none;">
+                <div class="search-col">
+                    <div class="search-results">
+                        <div class="ticket">
+                          <img src="images/flight04.jpg" alt="Flight Image">
+                          <div class="flight-details">
+                            <h2>Flight from KL to Singapore &nbsp;&nbsp;&nbsp;&nbsp;FlightHub001&nbsp;&nbsp;&nbsp;&nbsp;Boarding Time: 9.00pm</h2>
+                            <p>Passenger Name: Angelina&nbsp;&nbsp;&nbsp;&nbsp;Passport Number: A20156987</p>
+                            <p>Email: angelina@gmail.com &nbsp;&nbsp;&nbsp;&nbsp;Phone Number: 01145698745</p>
+                            <p class="bookingID">Booking ID: 3239486</p>
+                          </div>
+                          <a href="editing-form.html" class="herob-btn blue-btn">Edit</a>
+                          <a href="#" class="hero-btn red-btn" onclick="openPopup()">Cancel</a>
+
+
+                          
+                        </div>
+
+                        <div class="ticket">
+                            <img src="images/flight04.jpg" alt="Flight Image">
+                            <div class="flight-details">
+                              <h2>Flight from KL to Singapore &nbsp;&nbsp;&nbsp;&nbsp;FlightHub001&nbsp;&nbsp;&nbsp;&nbsp;Boarding Time: 9.00pm</h2>
+                              <p>Passenger Name: Angelina&nbsp;&nbsp;&nbsp;&nbsp;Passport Number: A20156987</p>
+                              <p>Email: angelina@gmail.com &nbsp;&nbsp;&nbsp;&nbsp;Phone Number: 01145698745</p>
+                              <p class="bookingID">Booking ID: 3239486</p>
+                            </div>
+                            <a href="editing-form.html" class="herob-btn blue-btn">Edit</a>
+                            <a href="#" class="hero-btn red-btn" onclick="openPopup()">Cancel</a>
+  
+                            
+                            
+                          </div>
+
+                          <div class="ticket">
+                            <img src="images/flight04.jpg" alt="Flight Image">
+                            <div class="flight-details">
+                              <h2>Flight from KL to Singapore &nbsp;&nbsp;&nbsp;&nbsp;FlightHub001&nbsp;&nbsp;&nbsp;&nbsp;Boarding Time: 9.00pm</h2>
+                              <p>Passenger Name: Angelina&nbsp;&nbsp;&nbsp;&nbsp;Passport Number: A20156987</p>
+                              <p>Email: angelina@gmail.com &nbsp;&nbsp;&nbsp;&nbsp;Phone Number: 01145698745</p>
+                              <p class="bookingID">Booking ID: 3239486</p>
+                            </div>
+                            <a href="editing-form.html" class="herob-btn blue-btn">Edit</a>
+                            <a href="#" class="hero-btn red-btn" onclick="openPopup()">Cancel</a>
+  
+                            
+                            
+                          </div>
+
+                        <div class="popup" id="popupSuccess">
+                            <img src="images/question mark.jpg">
+                            <h3>Confirmation</h3>
+                            <p>Are you sure you want to cancel your order?</p>
+                            <button type="button" class="herob-btn blue-btn" onclick="closePopupDeleteBooking()">Yes</button>
+                            <button type="button" class="hero-btn red-btn" onclick="closePopup()">No</button>
+                         
+                        </div>
+                       
+                      </div>
+                </div>
+            </div>
+
+
+        </section>
+
+        <!------------Footer------->
+        <section class="footer">
+            <h4>About Us</h4>
+            <p>FlightHub is a project developed for WIA1002  Data Structure <br>
+            using SpringBoot, MySQL, and Next.js.</p>
+            <div class="icons">
+                <i class="fa fa-github"></i>
+                <i class="fa fa-linkedin-square"></i>
+            </div>
+            <p>Made with <i class="fa fa-heart-o"></i> by DS Group 40</p>
+        </section>
+
+        <!-----------JavaScriptfor Toggle Menu-------->
+        <script>
+        var navLinks = document.getElementById("navLinks");
+        function showMenu(){
+            navLinks.style.right = "0";
+        }
+        function hideMenu(){
+            navLinks.style.right = "-200px";
+        }
+        
+        // Get today's date in the format YYYY-MM-DD
+        var today = new Date().toISOString().split('T')[0];
+                    
+        // Set the minimum attribute of the input element to today's date
+        document.getElementById("departureDate").setAttribute("min", today);
+
+        function redirectToSearchPage() {
+        event.preventDefault(); // Prevents the form from submitting automatically
+        
+        // Perform validation here if needed
+        
+        // Redirect to the home page after successful validation
+        window.location.href = "/booking"; // Replace "home.html" with your actual home page URL
+        }
+
+        var searchView = document.getElementById("searchView");
+        var historyView = document.getElementById("historyView");
+
+
+        function showBookingHistory() {
+            searchView.style.display = "none";
+            historyView.style.display = "block";
+        }
+
+        function showSearchView() {
+            historyView.style.display = "none";
+            searchView.style.display = "block";
+        }
+
+        let popup = document.getElementById("popup"); 
+
+
+        // Function to open the popup
+        function openPopup() {
+        //update the user information 
+
+
+        popupSuccess.classList.add("open-popup");
+        // Store a flag in localStorage to indicate that the popup should be open
+        localStorage.setItem("popupOpen", "true");
+        }
+
+        function closePopupDeleteBooking() {
+        popupSuccess.classList.remove("open-popup");
+        // Remove the flag from localStorage when closing the popup
+        localStorage.removeItem("popupOpen");
+        // Redirect to the homepage
+        window.location.href = "/booking";
+        }
+
+        // Function to close the popup
+        function closePopup() {
+        popupSuccess.classList.remove("open-popup");
+        // Remove the flag from localStorage when closing the popup
+        localStorage.removeItem("popupOpen");
+        // Redirect to the homepage
+        window.location.href = "/booking";
+        }
+        
+    // Check if the flag is present in localStorage when the page loads
+    document.addEventListener("DOMContentLoaded", function () {
+        if (localStorage.getItem("popupOpen") === "true") {
+            openPopup();
+            }
+        });
+       </script>
+       
+    </body>
+</html>

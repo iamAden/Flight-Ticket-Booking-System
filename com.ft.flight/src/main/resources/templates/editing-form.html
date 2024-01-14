@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Airline Booking Form</title>
+    <link rel="stylesheet" href="css/style2.css">
+     <!-- Latest compiled and minified CSS -->
+     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<!-- Popper JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+    <div class="container"><!--container-->
+
+        <form class="form-group" id="bookingForm"><!--form-->
+
+            <div class="booking-form"><!--form-->
+                <h1 class="text-center">FlightHub Editing Form</h1>
+                <h2 class="text-white">Personal Details</h2>
+
+                <div id="input"><!--input-->
+                    <input type="text" id="input-group" placeholder="Full Name" >
+                    <input type="text" id="input-group" placeholder="Phone Number" >
+                    <input type="email" id="input-group" placeholder="Email" >
+                    <input type="text" id="input-group" placeholder="Passport Number">
+                </div><!--input-->
+                <button type="submit" class="hero-btn .red-btn" onclick="openPopup()">Save</button>
+                <button type="button" class="hero-btn .red-btn" onclick="directBackPreviousPage()">Cancel</button>
+                
+                <div class="popup" id="popupSuccess">
+                    <img src="images/tick.PNG">
+                    <h3>Update Successful!</h3>
+                    <p>Your information has been updated successfully.</p>
+                    <button type="button" class="herob-btn blue-btn" onclick="closePopup()">OK</button>
+                </div>
+
+            </div><!--form-->
+
+         </form><!--form-->
+
+    </div><!--container-->
+
+    <script>
+    let popup = document.getElementById("popup"); 
+
+
+     // Function to open the popup
+    function openPopup() {
+    //update the user information 
+
+
+    popupSuccess.classList.add("open-popup");
+    // Store a flag in localStorage to indicate that the popup should be open
+    localStorage.setItem("popupOpen", "true");
+    }
+
+    // Function to close the popup
+    function closePopup() {
+    popupSuccess.classList.remove("open-popup");
+    // Remove the flag from localStorage when closing the popup
+    localStorage.removeItem("popupOpen");
+    // Redirect to the homepage
+    window.location.href = "booking.html";
+    }
+
+    // Check if the flag is present in localStorage when the page loads
+    document.addEventListener("DOMContentLoaded", function () {
+    if (localStorage.getItem("popupOpen") === "true") {
+        openPopup();
+        }
+    });
+
+    function directBackPreviousPage() {
+        event.preventDefault(); // Prevents the form from submitting automatically
+        
+        // Perform validation here if needed
+        
+        // Redirect to the home page after successful validation
+        window.location.href = "booking.html"; // Replace "home.html" with your actual home page URL
+        }
+
+    </script>
+
+    </body>
+</html>
