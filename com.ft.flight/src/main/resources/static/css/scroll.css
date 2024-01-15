@@ -6,14 +6,14 @@
   }
 
 .swiper-container{
-  width: 1150px;
-  margin:0 auto;
+  width: 1100px;
+  margin: auto;
   background-color: #19346e;
   padding: 50px 20px;
   overflow: hidden;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: initial;
   border-radius: 20px;
   }
   .swiper-button-next,
@@ -26,12 +26,17 @@
     cursor: pointer;
   }
 
-section .swiper-card{
+.swiper-card{
+  width:100%;
   display: flex;
   justify-content: center;
 }
+.swiper-slide {
+  width: calc((100% - 30px) / 7); /* Set the width for each slide (7 slides in a row) */
+  margin-right: 5px; /* Adjust the margin between slides */
+}
+
 .swiper-card{
-  width: 50px;
   position: relative;
   border-radius: 10px;
   background: white;
@@ -47,10 +52,17 @@ section .swiper-card{
   padding: 30px;
 }
 
-  .price, .date{
-    font-size: 18px;
+  .date{
+    font-size: 13px;
     font-weight: 500;
     color:#333;
+    text-align:center;
+  }
+
+  .price{
+    font-size: 15px;
+    font-weight: 500;
+    color:#4CAF50;
     text-align:center;
   }
 

@@ -44,11 +44,12 @@
                         <input type="date" placeholder="When are you leaving?" required id="departureDate">
                         <select required id="source">
                             <option value="" disabled selected>Select your location</option>
-                            <option value="Kuala Lumpur International Airport">Kuala Lumpur International Airport</option>
+                            <option value="Alor Setar Airport">Alor Setar Airport</option>
+                            
                         </select>
                         <select required id="destination">
                             <option value="" disabled selected>Select your destination</option>
-                            <option value="Alor Setar Airport">Alor Setar Airport</option>
+                            <option value="Kuala Lumpur International Airport">Kuala Lumpur International Airport</option>
                         </select>
                         <button type="submit" class="hero-btn">Search</button>
                     </form>
@@ -156,6 +157,10 @@
             var source = document.getElementById('source').value;
             var destination = document.getElementById('destination').value;
 
+            // Replace %20 with +
+            source = source.replace(/%20/g, '+');
+            destination = destination.replace(/%20/g, '+');
+
             var searchData = {
                 date: date,
                 source: source,
@@ -163,27 +168,12 @@
             };
 
             var queryString = new URLSearchParams(searchData).toString();
-            var url = '/search?' + queryString;
+            var url = '/date?' + queryString; // Change to /date instead of /search
 
-            fetch(url, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.redirect) {
-                    window.location.href = data.redirect;
-                } else {
-                    console.error('Error:', data.message);
-                    alert('Error: ' + data.message);
-                }
-            })
-            .catch(error => {
-                console.error('Fetch error:', error);
-            });
+            // Redirect to date.html with the parameters
+            window.location.href = url;
         }
+
 
 
         var searchView = document.getElementById("searchView");
