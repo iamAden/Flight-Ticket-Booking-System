@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -83,7 +85,7 @@ public class MainController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/bookingform")
+    @RequestMapping(value = "/booking-form")
     public ModelAndView bookingform() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("booking-form.html");
@@ -152,20 +154,34 @@ public class MainController {
         return ResponseEntity.ok(response);
     }
 
+    private static final Logger logger = LoggerFactory.getLogger(MainController.class);
 
     @GetMapping("/search")
     public ResponseEntity<Map<String, Object>> searchFlights(
         @RequestParam String date,
         @RequestParam String source,
         @RequestParam String destination) {
-    Map<String, Object> response = new HashMap<>();
-    List<Flight> flights = flightService.searchFlightsByDateAndSourceAndDestination(date, source, destination);
+            logger.info("Received search request with date: {}, source: {}, destination: {}", date, source, destination);
+        Map<String, Object> response = new HashMap<>();
+        List<Flight> flights = flightService.searchFlightsByDateAndSourceAndDestination(date, source, destination);
+        System.out.println(flights);
+        response.put("redirect", "/date"); // Specify the redirect URL
+        response.put("flights", flights);
 
-    response.put("redirect", "/date"); // Specify the redirect URL
-    response.put("flights", flights);
+        return ResponseEntity.ok(response);
+    }
 
-    return ResponseEntity.ok(response);
-}
+    @GetMapping("/searchAllDates")
+    public ResponseEntity<Map<String, Object>> searchAllDates(
+        @RequestParam String source,
+        @RequestParam String destination) {
+            Map<String, Object> response = new HashMap<>();
+            logger.info("Received search request with source: {}, destination: {}", source, destination);
+        List<Flight> flights = flightService.searchFlightsBySourceAndDestination(source, destination);
+        System.out.println(flights);
+        response.put("flights", flights);
+        return ResponseEntity.ok(response);
+    }
 
 
     @RequestMapping(value = "/date")
