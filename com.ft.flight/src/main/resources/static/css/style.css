@@ -335,7 +335,7 @@ h5{
 }
 /*-----------booking--------------*/
 .booking-header{
-    height: auto;
+    height: 100vh;
     width: 100%;
     background-image: linear-gradient(rgba(4,9,30,0.7),rgba(4,9,30,0.7)),url(/images/airport02.jpg);
     background-position: center;

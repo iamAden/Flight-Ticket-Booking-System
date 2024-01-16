@@ -1,8 +1,14 @@
 package com.ft.flight.controller;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BinaryOperator;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,7 +60,7 @@ public class MainController {
 
     private User user;
 
-
+//redirections
     @RequestMapping(value = "/login")
     public ModelAndView start() {
         ModelAndView modelAndView = new ModelAndView();
@@ -105,6 +111,7 @@ public class MainController {
     }
 
 
+    //register
     @PostMapping("/register")
     public ResponseEntity<Map<String, String>> Register(@RequestBody RegisterCredential registerCredential) {
         Map<String, String> response = new HashMap<>();
@@ -137,7 +144,7 @@ public class MainController {
         return ResponseEntity.ok(response);
     }
 
-
+    //login
     @PostMapping("/login")
     public ResponseEntity<Map<String, String>> login(
         @RequestBody LoginCredential loginCredentials,
@@ -165,6 +172,7 @@ public class MainController {
 
     private static final Logger logger = LoggerFactory.getLogger(MainController.class);
 
+    //search by date, source and destination
     @GetMapping("/search")
     public ResponseEntity<Map<String, Object>> searchFlights(
         @RequestParam String date,
@@ -178,17 +186,31 @@ public class MainController {
         return ResponseEntity.ok(response);
     }
 
+
     @GetMapping("/searchAllDates")
     public ResponseEntity<Map<String, Object>> searchAllDates(
-        @RequestParam String source,
-        @RequestParam String destination) {
-            Map<String, Object> response = new HashMap<>();
-            logger.info("Received search request with source: {}, destination: {}", source, destination);
+            @RequestParam String source,
+            @RequestParam String destination) {
+        Map<String, Object> response = new HashMap<>();
+        logger.info("Received search request with source: {}, destination: {}", source, destination);
+    
         List<Flight> flights = flightService.searchFlightsBySourceAndDestination(source, destination);
-        response.put("flights", flights);
-        System.out.println("HELPPPPPPPP");
+    
+        // Group flights by date and find the cheapest flight for each day
+        Map<LocalDate, Flight> cheapestFlights = flights.stream()
+                .collect(Collectors.toMap(Flight::getDate,
+                        Function.identity(),
+                        BinaryOperator.minBy(Comparator.comparingInt(Flight::getPrice))));
+    
+        // Sort flights by date in ascending order
+        List<Flight> sortedFlights = cheapestFlights.values().stream()
+                .sorted(Comparator.comparing(Flight::getDate))
+                .collect(Collectors.toList());
+    
+        response.put("flights", sortedFlights);
         return ResponseEntity.ok(response);
     }
+    
 
 
     @RequestMapping(value = "/date")
@@ -217,6 +239,7 @@ public class MainController {
         return "booking-form"; // Return the name of your booking form template
     }
 
+    //book flight
     @PostMapping("/book/{flightId}")
     public ResponseEntity<String> createBooking(
         @PathVariable Long flightId,
@@ -274,29 +297,7 @@ public class MainController {
     }
 
 
-    @GetMapping("/flight/{flightId}")
-    public Flight getFlightById(@PathVariable Long flightId) {
-        return flightService.getFlightById(flightId);
-    }
-
-
-
-    @PutMapping("/bookings/{id}")
-    public Booking editBooking(@PathVariable String id, @RequestBody Booking booking) {
-        Booking existingBooking = bookingRepository.findById(Long.valueOf(id)).orElse(null);
-
-        if (existingBooking != null) {
-            existingBooking.setPassengerName(booking.getPassengerName());
-            existingBooking.setPassengerPassportNo(booking.getPassengerPassportNo());
-            existingBooking.setPassengerContactNo(booking.getPassengerContactNo());
-
-            // Save the updated booking
-            return bookingRepository.save(existingBooking);
-        } else {
-            // Handle case where the booking with the given ID is not found
-            return null;
-        }
-    }
+    
 
 }
 class RegisterCredential {

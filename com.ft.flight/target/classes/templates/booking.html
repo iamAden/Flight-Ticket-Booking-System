@@ -14,6 +14,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
         <!-- Latest compiled JavaScript -->
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+        <link rel="icon" href="images/logoP.png" type="image/png">
 
     </head>
     <body>
@@ -70,51 +71,60 @@
                             <p>Email: angelina@gmail.com &nbsp;&nbsp;&nbsp;&nbsp;Phone Number: 01145698745</p>
                             <p class="bookingID">Booking ID: 3239486</p>
                           </div>
-                          <a href="editing-form.html" class="herob-btn blue-btn">Edit</a>
+                          <a href="/edit" class="herob-btn blue-btn">Edit</a>
                           <a href="#" class="hero-btn red-btn" onclick="openPopup()">Cancel</a>
 
 
                           
                         </div>
 
-                        <div class="ticket">
-                            <img src="images/flight04.jpg" alt="Flight Image">
-                            <div class="flight-details">
-                              <h2>Flight from KL to Singapore &nbsp;&nbsp;&nbsp;&nbsp;FlightHub001&nbsp;&nbsp;&nbsp;&nbsp;Boarding Time: 9.00pm</h2>
-                              <p>Passenger Name: Angelina&nbsp;&nbsp;&nbsp;&nbsp;Passport Number: A20156987</p>
-                              <p>Email: angelina@gmail.com &nbsp;&nbsp;&nbsp;&nbsp;Phone Number: 01145698745</p>
-                              <p class="bookingID">Booking ID: 3239486</p>
-                            </div>
-                            <a href="editing-form.html" class="herob-btn blue-btn">Edit</a>
-                            <a href="#" class="hero-btn red-btn" onclick="openPopup()">Cancel</a>
-  
-                            
-                            
-                          </div>
-
-                          <div class="ticket">
-                            <img src="images/flight04.jpg" alt="Flight Image">
-                            <div class="flight-details">
-                              <h2>Flight from KL to Singapore &nbsp;&nbsp;&nbsp;&nbsp;FlightHub001&nbsp;&nbsp;&nbsp;&nbsp;Boarding Time: 9.00pm</h2>
-                              <p>Passenger Name: Angelina&nbsp;&nbsp;&nbsp;&nbsp;Passport Number: A20156987</p>
-                              <p>Email: angelina@gmail.com &nbsp;&nbsp;&nbsp;&nbsp;Phone Number: 01145698745</p>
-                              <p class="bookingID">Booking ID: 3239486</p>
-                            </div>
-                            <a href="editing-form.html" class="herob-btn blue-btn">Edit</a>
-                            <a href="#" class="hero-btn red-btn" onclick="openPopup()">Cancel</a>
-  
-                            
-                            
-                          </div>
-
-                        <div class="popup" id="popupSuccess">
-                            <img src="images/question mark.jpg">
-                            <h3>Confirmation</h3>
-                            <p>Are you sure you want to cancel your order?</p>
-                            <button type="button" class="herob-btn blue-btn" onclick="closePopupDeleteBooking()">Yes</button>
-                            <button type="button" class="hero-btn red-btn" onclick="closePopup()">No</button>
-                         
-                        </div>
+                        <script>
+                            // Function to create a ticket element
+                            function createTicket(data) {
+                                const ticket = document.createElement('div');
+                                ticket.className = 'ticket';
+                    
+                                ticket.innerHTML = `
+                                    <img src="${data.imageSrc}" alt="Flight Image">
+                                    <div class="flight-details">
+                                        <h2>${data.title}</h2>
+                                        <p>Passenger Name: ${data.passengerName} Passport Number: ${data.passportNumber}</p>
+                                        <p>Email: ${data.email} Phone Number: ${data.phoneNumber}</p>
+                                        <p class="bookingID">Booking ID: ${data.bookingId}</p>
+                                    </div>
+                                    <a href="editing-form.html" class="herob-btn blue-btn">Edit</a>
+                                    <a href="#" class="hero-btn red-btn" onclick="openPopup()">Cancel</a>
+                                `;
+                    
+                                return ticket;
+                            }
+                    
+                            // Function to fetch data from the controller
+                            async function fetchDataFromController() {
+                                try {
+                                    const response = await fetch('https://your-api-endpoint'); // Replace with the actual API endpoint
+                                    const data = await response.json();
+                    
+                                    // Render the tickets using the fetched data
+                                    renderTickets(data);
+                                } catch (error) {
+                                    console.error('Error fetching data:', error);
+                                }
+                            }
+                    
+                            // Function to render tickets based on the fetched data
+                            function renderTickets(dataArray) {
+                                const historyViewContainer = document.getElementById('historyViewContainer');
+                    
+                                dataArray.forEach(data => {
+                                    const ticketElement = createTicket(data);
+                                    historyViewContainer.appendChild(ticketElement);
+                                });
+                            }
+                    
+                            // Call the function to fetch data and render tickets
+                            fetchDataFromController();
+                        </script>
                        
                       </div>
                 </div>
@@ -123,17 +133,19 @@
 
         </section>
 
-        <!------------Footer------->
-        <section class="footer">
+         <!------------Footer------->
+         <section class="footer">
             <h4>About Us</h4>
             <p>FlightHub is a project developed for WIA1002  Data Structure <br>
-            using SpringBoot, MySQL, and Next.js.</p>
+                using SpringBoot, MySQL, and HTML.</p>
             <div class="icons">
-                <i class="fa fa-github"></i>
-                <i class="fa fa-linkedin-square"></i>
+                <a href="https://github.com/iamAden/Flight-Ticket-Booking-System" target="_blank">
+                    <i class="fa fa-github"></i>
+                </a>
             </div>
             <p>Made with <i class="fa fa-heart-o"></i> by DS Group 40</p>
         </section>
+
 
         <!-----------JavaScriptfor Toggle Menu-------->
         <script>
