@@ -37,6 +37,7 @@ import com.ft.flight.repository.FlightRepository;
 import com.ft.flight.repository.UserRepository;
 import com.ft.flight.service.FlightService;
 import com.ft.flight.service.UserService;
+import com.ft.flight.service.BookingService;
 
 import jakarta.servlet.http.HttpSession;
 import org.springframework.ui.Model;
@@ -58,9 +59,11 @@ public class MainController {
     @Autowired
     private UserService userService;
 
-    private User user;
+    @Autowired
+    private BookingService bookingService;
 
-//redirections
+
+    //redirections
     @RequestMapping(value = "/login")
     public ModelAndView start() {
         ModelAndView modelAndView = new ModelAndView();
@@ -248,8 +251,8 @@ public class MainController {
     ) {
         String passengerName=bookingForm.getPassengerName();
         String passengerEmail=bookingForm.getPassengerEmail();
-        Long passengerContactNo=bookingForm.getPassengerContactNo();
-        Long passengerPassportNo=bookingForm.getPassengerPassportNo();
+        String passengerContactNo=bookingForm.getPassengerContactNo();
+        String passengerPassportNo=bookingForm.getPassengerPassportNo();
 
         // Retrieve user ID from the session (assuming it is stored as an attribute named "userId")
         Long userId = (Long) session.getAttribute("userId");
@@ -296,9 +299,33 @@ public class MainController {
         }
     }
 
+    //fetch booking history by user id
+    @GetMapping("/history")
+    public ResponseEntity<List<Booking>> getBookingHistory(HttpSession session) {
+        Long userId = (Long) session.getAttribute("userId");
+        
+        if (userId == null) {
+            // Handle the case where the user ID is not present in the session
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
 
+        List<Booking> bookingHistory = bookingService.getBookingHistoryByUserId(userId);
+
+
+        return ResponseEntity.ok(bookingHistory);
+    }
     
+    @GetMapping("/flights/{flightId}")
+    public ResponseEntity<Flight> getFlightById(@PathVariable Long flightId) {
+        // Assuming FlightService has a method to retrieve a flight by its ID
+        Flight flight = flightService.getFlightById(flightId);
 
+        if (flight != null) {
+            return ResponseEntity.ok(flight);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }
 class RegisterCredential {
     private String email;
@@ -368,8 +395,8 @@ class FlightCredentials {
 class BookingForm {
     private String passengerName;
     private String passengerEmail;
-    private Long passengerContactNo;
-    private Long passengerPassportNo;
+    private String passengerContactNo;
+    private String passengerPassportNo;
 
     public String getPassengerName(){
         return this.passengerName;
@@ -383,16 +410,16 @@ class BookingForm {
     public void setPassengerEmail(String passengerEmail) {
         this.passengerEmail = passengerEmail;
     }
-    public Long getPassengerContactNo(){
+    public String getPassengerContactNo(){
         return this.passengerContactNo;
     }
-    public void setPassengerContactNo(Long passengerContactNo) {
+    public void setPassengerContactNo(String passengerContactNo) {
         this.passengerContactNo = passengerContactNo;
     }
-    public Long getPassengerPassportNo(){
+    public String getPassengerPassportNo(){
         return this.passengerPassportNo;
     }
-    public void setPassengerPassportNo(Long passengerPassportNo) {
+    public void setPassengerPassportNo(String passengerPassportNo) {
         this.passengerPassportNo = passengerPassportNo;
     }
 }

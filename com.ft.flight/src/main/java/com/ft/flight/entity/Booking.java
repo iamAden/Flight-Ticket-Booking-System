@@ -24,16 +24,10 @@ public class Booking  {
     private Long id;
 
     @ManyToOne
-    @JsonIgnore
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
     @JoinColumn(name = "user", nullable = false)
     private User user;
 
     @ManyToOne
-    @JsonIgnore
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
     @JoinColumn(name = "flight", nullable = false)
     private Flight flight;
 
@@ -45,10 +39,10 @@ public class Booking  {
     private String passengerName;
 
     @Column(nullable = false)
-    private Long passengerPassportNo;
+    private String passengerPassportNo;
 
     @Column(nullable = false)
-    private Long passengerContactNo;
+    private String passengerContactNo;
 
     @Column(nullable = false)
     private String passengerEmail;
@@ -56,8 +50,8 @@ public class Booking  {
     public Booking(
         String passengerName,
         String passengerEmail,
-        Long passengerContactNo,
-        Long passengerPassportNo,
+        String passengerContactNo,
+        String passengerPassportNo,
         BookingStatus bookingStatus,
         User user,
         Flight flight
@@ -83,19 +77,19 @@ public class Booking  {
         return user;
     }
 
-    public Long getPassengerContactNo() {
+    public String getPassengerContactNo() {
         return passengerContactNo;
     }
 
-    public void setPassengerContactNo(Long passengerContactNo) {
+    public void setPassengerContactNo(String passengerContactNo) {
         this.passengerContactNo = passengerContactNo;
     }
 
-    public Long getPassengerPassportNo() {
+    public String getPassengerPassportNo() {
         return passengerPassportNo;
     }
 
-    public void setPassengerPassportNo(Long passengerPassportNo) {
+    public void setPassengerPassportNo(String passengerPassportNo) {
         this.passengerPassportNo = passengerPassportNo;
     }
 

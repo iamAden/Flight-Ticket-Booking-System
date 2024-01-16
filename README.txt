@@ -1,18 +1,17 @@
-1. download the repository 
+1. Download the repository
+    - download the repository
+    - open cmd to test if 'mvn' is a recognized command (or else cant run application)
+    - test by typing 'mvn --version' inside cmd
+    - if not, can follow this tutorial https://bobbyhadz.com/blog/mvn-is-not-recognized-as-internal-or-external-command
 
-2. Setting up MySQL:
-    - Download MySQL https://dev.mysql.com/downloads/installer/
-    - Install MySQL
-    - Username put as root
-    - Password as whatever u want
+2. preparing the database:
+    - go to https://www.phpmyadmin.co/
+    - login using
+        server: sql12.freesqldatabase.com
+        username: sql12677284
+        password: bHImi3TK9w
 
-3. Setting up Database
-    - go to com.ft.flight/backend/src/main/java/resources/application.properties
-    - Modify spring.datasource.password=[your MySQL password]
-    - open MySQL Command Line
-    - run 'Create schema ftbs'
-
-4. Running the application
+3. Running the application
     - open the project folder inside ur ide (vsc/intellij)(netbeans cannot)
     - open terminal inside ur ide
     - `cd com.ft.flight`

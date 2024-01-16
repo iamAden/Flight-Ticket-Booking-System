@@ -9,7 +9,7 @@
             <link rel="stylesheet" href="/css/swiper-bundle.min.css">
            <!--CSS-->
             <link rel="stylesheet" href="/css/scroll.css">
-
+            <link rel="icon" href="images/logoP.png" type="image/png">
         </head>
 
         <style>
@@ -89,7 +89,6 @@
                                 </div>
                             </div>
                         `;
-                        console.log(cardItem);
                         return cardItem;
                     }
                 
@@ -174,7 +173,6 @@
                     if (flight) {
                         var searchResultsContainer = document.getElementById('searchResultsContainer');
                         searchResultsContainer.innerHTML += createFlightItem(flight);
-                        console.log("meow");
                     }
                 })
                 .catch(error => {
@@ -185,10 +183,15 @@
             }
         
             function createFlightItem(flight) {
+                        let imageSrc;
+                        if (flight.company === 'AirAsia') {
+                            imageSrc = 'images/flight04.jpg';
+                        }
                         var flightItem = "<div class='flight-item'>" +
-                            "<img src='images/flight04.jpg' alt='Flight Image'>"+
+                            "<img src='"+imageSrc+"' alt='Flight Image'>"+
                             "<div class='flight-details'>" +
-                            "<h2>Flight from "+flight.source+" to "+flight.destination+" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+flight.flightName+"</h2>" +
+                            "<h2>Flight from "+flight.source+" to "+flight.destination+"</h2>" +
+                            "<h2>" +flight.flightName+"</h2>" +
                             "<p>Date: " + flight.date + "</p>" +
                             "<p>Departure: " + flight.departure + "</p>" +
                             "<p>Arrival: " + flight.arrival + "</p>" +
@@ -197,7 +200,6 @@
                             "<div class='flight-price'>RM" + flight.price + "</div>" +
                             "<a href='/booking-form?flightId=" +flight.id+"' class='herob-btn blue-btn'>Book Now</button></a>" +
                             "</div>";
-                            console.log(flightItem);
                         return flightItem;
                     }
 
