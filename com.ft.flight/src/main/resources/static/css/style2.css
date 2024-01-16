@@ -43,41 +43,18 @@ body{
 ::placeholder{
     color:#fff
 }
-#input #input-group{
-    width:300px;
-    margin:7px;
-    border-top: none;
-    border-left: none;
-    border-right: none;
-    outline: none;
-    background: transparent;
-    color:#fff
+
+.input-field .input {
+  width: 300px;
+  margin: 7px;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  outline: none;
+  background: transparent;
+  color: #fff;
 }
 
-#input2 #input-group{
-    margin-left: 50px;
-}
-#input3 #input-group{
-    width:300px;
-    margin:7px;
-    border-top: none;
-    border-left: none;
-    border-right: none;
-    outline: none;
-    background: transparent;
-    color:#fff
-}
-
-#input3 #input-group1{
-    width:615px;
-    margin:5px;
-    border-top: none;
-    border-left: none;
-    border-right: none;
-    outline: none;
-    background: transparent;
-    color:#fff
-}
 
 .popup {
   width: 400px;

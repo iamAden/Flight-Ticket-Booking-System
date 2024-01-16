@@ -3,18 +3,30 @@ package com.ft.flight.entity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.sql.Time;
 import java.util.Date;
-import java.time.LocalDate;
+import java.util.Queue;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import java.time.LocalDate;
+import java.util.List;
 @Data
 @Entity
 @Table(name="flight")
 @AllArgsConstructor
 @NoArgsConstructor
+
 public class Flight {
+    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
@@ -49,11 +61,29 @@ public class Flight {
     private int price;
 
     @Transient
-    @OneToMany
-    @JoinColumn(name = "booking")
-    private MyQueue<Booking> booking;
+    private MyLinkedList<Booking> confirmedList = new MyLinkedList<>();
 
-
+    @Transient
+    private MyQueue<Booking> waitingQueue = new MyQueue<>();
+    
+    @JsonIgnore
+    @OneToMany(mappedBy = "flight")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private List<Booking> bookings ;
+    
+    // Constructor or initialization method to initialize the lists
+    public Flight(List<Booking> bookings) {
+        if (bookings != null) {
+            for (Booking booking : bookings) {
+                if (booking.getBookingStatus() == BookingStatus.CONFIRMED) {
+                    confirmedList.add(new MyLinkedList.Node<>(booking));
+                } else if (booking.getBookingStatus() == BookingStatus.WAITING) {
+                    waitingQueue.enqueue(booking);
+                }
+            }
+        }
+    }
 
     // Getters and Setters
 
@@ -128,6 +158,11 @@ public class Flight {
     public void setDate(LocalDate date) {
         this.date = date;
     }
+
+    public void decreaseAvailableSeats(){
+        availableSeats--;
+    }
+
 }
 
 

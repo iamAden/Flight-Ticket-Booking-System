@@ -1,7 +1,7 @@
 package com.ft.flight.entity;
 
 public enum BookingStatus {
-    BOOKED,
+    CONFIRMED,
     CANCELED,
     WAITING
 }

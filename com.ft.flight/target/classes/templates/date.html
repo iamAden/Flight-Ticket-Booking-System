@@ -55,7 +55,7 @@
                             .then(response => response.json())
                             .then(data => {
                                 var flights = data.flights;
-                                console.log("HERE" + flights);
+                                console.log("Response from server:", data);
                                 if (flights && flights.length > 0) {
                                     var swiper = new Swiper('.swiper', {
                                     slidesPerView: 7,
@@ -71,15 +71,6 @@
                                         prevEl: '.swiper-button-prev',
                                     },
 
-
-                                    // var swiper = new Swiper(".swiper-container", {
-                                    // slidesPerView: 7, // Number of slides to show at a time
-                                    // slidesPerGroup: 7, // Number of slides to advance when clicking next
-                                    // spaceBetween: 20, // Adjust the spacing between cards as needed
-                                    // navigation: {
-                                    //     nextEl: ".swiper-button-next",
-                                    //     prevEl: ".swiper-button-prev",
-                                    // },
                                 });
                                 }
                             })
@@ -91,7 +82,7 @@
                     // Function to create HTML for each card based on flight data
                     function createCardItem(flight) {
                         var cardItem = `
-                            <div class="swiper-card" onclick="handleCardClick()">
+                            <div class="swiper-card" onclick="handleCardClick('${flight.id}')">
                                 <div class="card-content">
                                     <div class="date">${flight.date}</div>
                                     <div class="price"> RM ${flight.price}</div>
@@ -141,7 +132,7 @@
                         .then(response => response.json())
                         .then(data => {
                             var flights = data.flights;
-            
+                            console.log("Flights:",flights);
                             if (flights && flights.length > 0) {
                                 var searchResultsContainer = document.getElementById('searchResultsContainer');
                                 flights.forEach(function (flight) {
@@ -153,22 +144,7 @@
                             console.error('Fetch error:', error);
                         });
                     });
-                    function createFlightItem(flight) {
-                        var flightItem = "<div class='flight-item'>" +
-                            "<img src='images/flight04.jpg' alt='Flight Image'>"+
-                            "<div class='flight-details'>" +
-                            "<h2>Flight from "+flight.source+" to "+flight.destination+" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+flight.flightName+"</h2>" +
-                            "<p>Departure: " + flight.departure + "</p>" +
-                            "<p>Arrival: " + flight.arrival + "</p>" +
-                            "<p class='available-seats'>Available Seats: " + flight.availableSeats + "</p>" +
-                            "</div>" +
-                            "<div class='flight-price'>RM" + flight.price + "</div>" +
-                            "<a href='/booking-form' button class='herob-btn blue-btn'>Book Now</button></a>" +
-                            "</div>";
-                        
-                            console.log(flightItem);
-                        return flightItem;
-                    }
+                    
 
                 </script>
                 
@@ -178,10 +154,51 @@
         
         </body>
         <script>
-            function handleCardClick() {
-                // retrive the date and get the available flight for that day with the same source and destination
-                alert("show the available flight for that day with the same source and destination");
+            function handleCardClick(flightId) {
+                console.log('Clicked on flight with ID:', flightId);
+
+                // Clear existing flight items
+                var searchResultsContainer = document.getElementById('searchResultsContainer');
+                searchResultsContainer.innerHTML = '';
+
+                // Fetch new flight items based on the clicked flightId
+                // You can use the flightId to customize the query or fetch logic
+                var url = '/fetchFlight/' + encodeURIComponent(flightId);
+
+                fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Data:",data); // Log the entire data object
+                    var flight = data.flights; // Access the flight object from the 'flights' property
+                    console.log("Flight:",flight);
+                    if (flight) {
+                        var searchResultsContainer = document.getElementById('searchResultsContainer');
+                        searchResultsContainer.innerHTML += createFlightItem(flight);
+                        console.log("meow");
+                    }
+                })
+                .catch(error => {
+                    console.error('Fetch error:', error);
+                });
+
+
             }
+        
+            function createFlightItem(flight) {
+                        var flightItem = "<div class='flight-item'>" +
+                            "<img src='images/flight04.jpg' alt='Flight Image'>"+
+                            "<div class='flight-details'>" +
+                            "<h2>Flight from "+flight.source+" to "+flight.destination+" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+flight.flightName+"</h2>" +
+                            "<p>Departure: " + flight.departure + "</p>" +
+                            "<p>Arrival: " + flight.arrival + "</p>" +
+                            "<p class='available-seats'>Available Seats: " + flight.availableSeats + "</p>" +
+                            "</div>" +
+                            "<div class='flight-price'>RM" + flight.price + "</div>" +
+                            "<a href='/booking-form?flightId=" +flight.id+"' class='herob-btn blue-btn'>Book Now</button></a>" +
+                            "</div>";
+                            console.log(flightItem);
+                        return flightItem;
+                    }
 
         </script>
         <script src="js/swiper-bundle.min.js"></script>

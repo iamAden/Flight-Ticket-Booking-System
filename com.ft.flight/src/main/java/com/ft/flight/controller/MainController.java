@@ -7,11 +7,13 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -29,6 +31,9 @@ import com.ft.flight.repository.FlightRepository;
 import com.ft.flight.repository.UserRepository;
 import com.ft.flight.service.FlightService;
 import com.ft.flight.service.UserService;
+
+import jakarta.servlet.http.HttpSession;
+import org.springframework.ui.Model;
 
 @Controller
 @RequestMapping("/")
@@ -128,12 +133,16 @@ public class MainController {
         userRepository.save(user);
         //response.put("redirect", "/home");
         response.put("message","Successfully registered.");
+        response.put("redirect", "/login");
         return ResponseEntity.ok(response);
     }
 
 
     @PostMapping("/login")
-    public ResponseEntity<Map<String, String>> login(@RequestBody LoginCredential loginCredentials) {
+    public ResponseEntity<Map<String, String>> login(
+        @RequestBody LoginCredential loginCredentials,
+        HttpSession session
+        ) {
         Map<String, String> response = new HashMap<>();
 
         List<User> users = userRepository.findByUsername(loginCredentials.getUsername());
@@ -148,7 +157,7 @@ public class MainController {
             response.put("message", "Incorrect Password!");
             return ResponseEntity.badRequest().body(response);
         }
-
+        session.setAttribute("userId",user.getId());
         response.put("redirect", "/home"); // Specify the redirect URL
 
         return ResponseEntity.ok(response);
@@ -164,10 +173,8 @@ public class MainController {
             logger.info("Received search request with date: {}, source: {}, destination: {}", date, source, destination);
         Map<String, Object> response = new HashMap<>();
         List<Flight> flights = flightService.searchFlightsByDateAndSourceAndDestination(date, source, destination);
-        System.out.println(flights);
         response.put("redirect", "/date"); // Specify the redirect URL
         response.put("flights", flights);
-
         return ResponseEntity.ok(response);
     }
 
@@ -178,8 +185,8 @@ public class MainController {
             Map<String, Object> response = new HashMap<>();
             logger.info("Received search request with source: {}, destination: {}", source, destination);
         List<Flight> flights = flightService.searchFlightsBySourceAndDestination(source, destination);
-        System.out.println(flights);
         response.put("flights", flights);
+        System.out.println("HELPPPPPPPP");
         return ResponseEntity.ok(response);
     }
 
@@ -191,38 +198,87 @@ public class MainController {
         return modelAndView;
     }
 
+    //date.html
+    @GetMapping("/fetchFlight/{flightId}")
+    public ResponseEntity<Map<String, Object>> fetchFlight(@PathVariable Long flightId) {
+        Map<String, Object> response = new HashMap<>();
+        Flight flight = flightService.getFlightById(flightId);
+        System.out.println(flight);
+        response.put("flights", flight);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/booking-form/{flightId}")
+    public String showBookingForm(@RequestParam Long flightId, Model model) {
+        Flight flight = flightService.getFlightById(flightId);
+        model.addAttribute("flight", flight);
+
+        return "booking-form"; // Return the name of your booking form template
+    }
+
+    @PostMapping("/book/{flightId}")
+    public ResponseEntity<String> createBooking(
+        @PathVariable Long flightId,
+        @RequestBody BookingForm bookingForm,
+        HttpSession session
+    ) {
+        String passengerName=bookingForm.getPassengerName();
+        String passengerEmail=bookingForm.getPassengerEmail();
+        Long passengerContactNo=bookingForm.getPassengerContactNo();
+        Long passengerPassportNo=bookingForm.getPassengerPassportNo();
+
+        // Retrieve user ID from the session (assuming it is stored as an attribute named "userId")
+        Long userId = (Long) session.getAttribute("userId");
+        System.out.println("user id "+userId);
+
+        if (userId == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not logged in");
+        }
+
+        //get user
+        User user = userService.getUserById(userId);
+        //System.out.println("user: "+user);
+        //get flight
+        Flight flight = flightService.getFlightById(flightId);
+        //System.out.println("flight: "+flight);
+        if (flight == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Flight not found");
+        }
+
+        // Determine the booking status based on the number of available seats
+        BookingStatus bookingStatus = (flight.getAvailableSeats() > 0) ? BookingStatus.CONFIRMED : BookingStatus.WAITING;
+        System.out.println("BookingStatus: " + bookingStatus);
+        // initialise a new Booking entity
+        Booking newBooking = new Booking(
+            passengerName, passengerEmail,
+            passengerContactNo, passengerPassportNo,
+            bookingStatus, user, flight
+        );
+
+        System.out.println("New Booking: " + newBooking);
+
+        try {
+            bookingRepository.save(newBooking);
+            // If the booking status is confirmed, decrease the available seats for the flight
+            if (bookingStatus == BookingStatus.CONFIRMED) {
+                flight.decreaseAvailableSeats();
+                flightRepository.save(flight);
+            }
+
+            return ResponseEntity.status(HttpStatus.CREATED).body("{\"status\": \"" + bookingStatus + "\", \"message\": \"Booking created successfully\"}");
+        } catch (Exception e) {
+            // Handle any exceptions, such as database errors
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error creating booking");
+        }
+    }
+
 
     @GetMapping("/flight/{flightId}")
     public Flight getFlightById(@PathVariable Long flightId) {
         return flightService.getFlightById(flightId);
-
     }
 
-    @PostMapping("/flight/{flightId}/book/")
-    public ResponseEntity<String> book(
-            @PathVariable Long flightId,
-            @RequestBody BookingCredentials bookingCredentials
-    ) {
-        // Assuming you have a method to retrieve the flight by ID
-        Flight flight = flightService.getFlightById(flightId);
-
-        Booking booking = new Booking();
-        booking.setFlight(flight);
-        booking.setPassengerName(bookingCredentials.getPassengerName());
-        booking.setPassengerPassportNo(bookingCredentials.getPassengerPassportNo());
-        booking.setPassengerContactNo(bookingCredentials.getPassengerContactNo());
-
-        if (flight.getAvailableSeats() > 0) {
-            booking.setBookingStatus(BookingStatus.BOOKED);
-            flight.setAvailableSeats(flight.getAvailableSeats() - 1);
-            bookingRepository.save(booking);
-            return ResponseEntity.ok("{\"message\": \"Successfully booked!\"}");
-        } else {
-            booking.setBookingStatus(BookingStatus.WAITING);
-            bookingRepository.save(booking);
-            return ResponseEntity.ok("{\"message\": \"Flight is fully booked! You are in waiting list.\"}");
-        }
-    }
 
 
     @PutMapping("/bookings/{id}")
@@ -240,11 +296,6 @@ public class MainController {
             // Handle case where the booking with the given ID is not found
             return null;
         }
-    }
-
-    @DeleteMapping("/bookings/{id}")
-    public void deleteBooking(@PathVariable String id) {
-        bookingRepository.deleteById(Long.valueOf(id));
     }
 
 }
@@ -313,31 +364,33 @@ class FlightCredentials {
         this.source = source;
     }
 }
-class BookingCredentials{
+class BookingForm {
     private String passengerName;
+    private String passengerEmail;
     private Long passengerContactNo;
     private Long passengerPassportNo;
 
-    public String getPassengerName() {
-        return passengerName;
+    public String getPassengerName(){
+        return this.passengerName;
     }
-
     public void setPassengerName(String passengerName) {
         this.passengerName = passengerName;
     }
-
-    public Long getPassengerContactNo() {
-        return passengerContactNo;
+    public String getPassengerEmail(){
+        return this.passengerEmail;
     }
-
+    public void setPassengerEmail(String passengerEmail) {
+        this.passengerEmail = passengerEmail;
+    }
+    public Long getPassengerContactNo(){
+        return this.passengerContactNo;
+    }
     public void setPassengerContactNo(Long passengerContactNo) {
         this.passengerContactNo = passengerContactNo;
     }
-
-    public Long getPassengerPassportNo() {
-        return passengerPassportNo;
+    public Long getPassengerPassportNo(){
+        return this.passengerPassportNo;
     }
-
     public void setPassengerPassportNo(Long passengerPassportNo) {
         this.passengerPassportNo = passengerPassportNo;
     }

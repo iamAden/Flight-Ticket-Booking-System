@@ -29,13 +29,13 @@
       <h1 class="text-center">FlightHub Booking Form</h1>
       <h2 class="text-white">Personal Details</h2>
 
-      <div id="input"><!--input-->
-        <input type="text" id="input-group" placeholder="Full Name" required>
-        <input type="text" id="input-group" placeholder="Phone Number" required>
-        <input type="email" id="input-group" placeholder="Email" required>
-        <input type="text" id="input-group" placeholder="Passport Number" required>
+      <div class="input-field"><!--input-->
+        <input type="text" id="passengerName" class="input" placeholder="Full Name" required>
+        <input type="text" id="passengerContactNo" class="input" placeholder="Phone Number" required>
+        <input type="email" id="passengerEmail" class="input" placeholder="Email" required>
+        <input type="text" id="passengerPassportNo" class="input"placeholder="Passport Number" required>
       </div><!--input-->
-      <button type="submit" class="hero-btn .red-btn" onclick="openPopup()">Submit Form</button>
+      <button type="submit" class="hero-btn red-btn">Submit Form</button>
 
       <div class="popup" id="popupSuccess">
         <img src="images/tick.PNG">
@@ -57,37 +57,100 @@
   </form><!--form-->
 
 </div><!--container-->
-
 <script>
-    let popup = document.getElementById("popup");
+  document.getElementById('bookingForm').addEventListener('submit', function (event) {
+      event.preventDefault();
+
+      var passengerName = document.getElementById('passengerName').value;
+      var passengerEmail = document.getElementById('passengerEmail').value;
+      var passengerContactNo = document.getElementById('passengerContactNo').value;
+      var passengerPassportNo = document.getElementById('passengerPassportNo').value;
+
+      var bookingData = {
+        passengerName: passengerName,
+        passengerEmail: passengerEmail,
+        passengerContactNo: passengerContactNo,
+        passengerPassportNo: passengerPassportNo
+      };
+
+      // Get the current URL
+      var currentUrl = window.location.href;
+
+      // Create a URLSearchParams object with the URL
+      var urlParams = new URLSearchParams(currentUrl);
+      var match = currentUrl.match(/[?&]flightId=([^&]*)/);
+      var flightId = match ? decodeURIComponent(match[1]) : null;
+      console.log('Flight ID:', flightId);
 
 
-     // Function to open the popup
-    function openPopup() {
-        //check if the book is full or not, if else statement
+      // Log the value to the console (you can do whatever you need with it)
+      console.log('Current URL:', currentUrl);
+      console.log('Flight ID:', flightId);
 
 
-        popupSuccess.classList.add("open-popup");
-    // Store a flag in localStorage to indicate that the popup should be open
-    localStorage.setItem("popupOpen", "true");
+      var url = '/book/' + encodeURIComponent(flightId);
+
+      fetch(url, {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(bookingData)
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        if (data.status === 'CONFIRMED') {
+              // Handle confirmed booking
+              showPopup('popupSuccess');
+          } else if (data.status === 'WAITING') {
+              // Handle waiting booking
+              showPopup('popupWaiting');
+          } else {
+              // Handle other cases, e.g., display an error message
+              console.error('Error:', data.message);
+
+              // You can access the error message in data.message
+              // For example, you might want to display it on the page
+              alert('Error: ' + data.message);
+          }
+      })
+      .catch(error => {
+          // Handle fetch error
+          console.error('Fetch error:', error);
+      });
+  });
+</script>
+<script>
+
+function showPopup(popupId) {
+    var popup = document.getElementById(popupId);
+    if (popup) {
+        popup.classList.add("open-popup");
+        // Store a flag in localStorage to indicate that the popup should be open
+        localStorage.setItem("popupOpen", "true");
     }
+  }
 
-    // Function to close the popup
-    function closePopup() {
-    popupSuccess.classList.remove("open-popup");
+  // Function to close the popup
+  function closePopup() {
+    var popups = document.querySelectorAll('.popup');
+    popups.forEach(function (popup) {
+      popup.classList.remove("open-popup");
+    });
     // Remove the flag from localStorage when closing the popup
     localStorage.removeItem("popupOpen");
     // Redirect to the homepage
     window.location.href = "/booking";
-    }
+  }
 
-    // Check if the flag is present in localStorage when the page loads
-    document.addEventListener("DOMContentLoaded", function () {
+  // Check if the flag is present in localStorage when the page loads
+  document.addEventListener("DOMContentLoaded", function () {
     if (localStorage.getItem("popupOpen") === "true") {
-        openPopup();
-        }
-    });
-
+      // Adjust the popup ID based on your logic
+      showPopup('popupSuccess');
+    }
+  });
     </script>
 
 </body>

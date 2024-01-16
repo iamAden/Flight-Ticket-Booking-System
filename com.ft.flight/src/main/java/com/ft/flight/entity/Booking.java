@@ -1,26 +1,39 @@
 package com.ft.flight.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
 @Entity
 @Table(name="booking")
 @AllArgsConstructor
 @NoArgsConstructor
+
 public class Booking  {
+    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
+    @Column(nullable = false)
     private Long id;
 
     @ManyToOne
+    @JsonIgnore
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @JoinColumn(name = "user", nullable = false)
     private User user;
 
     @ManyToOne
+    @JsonIgnore
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @JoinColumn(name = "flight", nullable = false)
     private Flight flight;
 
@@ -37,13 +50,26 @@ public class Booking  {
     @Column(nullable = false)
     private Long passengerContactNo;
 
-    @Column
-    @Transient
-    private MyLinkedList confirmedList = new MyLinkedList();
+    @Column(nullable = false)
+    private String passengerEmail;
 
-    @Column
-    @Transient
-    private MyQueue<Booking> waitingQueue = new MyQueue<>();
+    public Booking(
+        String passengerName,
+        String passengerEmail,
+        Long passengerContactNo,
+        Long passengerPassportNo,
+        BookingStatus bookingStatus,
+        User user,
+        Flight flight
+    ){
+        this.passengerContactNo=passengerContactNo;
+        this.passengerName=passengerName;
+        this.passengerPassportNo=passengerPassportNo;
+        this.passengerEmail=passengerEmail;
+        this.user=user;
+        this.flight=flight;
+        this.bookingStatus=bookingStatus;
+    }
 
     public Long getId() {
         return id;
@@ -101,5 +127,5 @@ public class Booking  {
         this.flight = flight;
     }
 
-
+    
 }
