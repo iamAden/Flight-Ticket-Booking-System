@@ -78,20 +78,24 @@
                                 .then(response => response.json())
                                 .then(data => {
                                     console.log("Data:", data); // Log the entire data object
-                                    
-                                    if (data&&data.length>0) {
+                                    var bookings = data.bookingHistory;
+                                    if (bookings) {
                                         var historyResultsContainer = document.getElementById('historyResultsContainer');
-                                        data.forEach(function (booking) {
+                                        bookings.forEach(function (booking) {
                                             console.log("Booking:", booking); // Log
                                             historyResultsContainer.innerHTML += createHistoryTicket(booking);
                                         });
+                                    }
+                                    else {
+                                        // Handle other cases, e.g., display an error message
+                                        console.error('Error:', data.message);
+                                        // display it on the page
+                                        alert('Error: ' + data.message);
                                     }
                                 })
                                 .catch(error => {
                                     console.error('Fetch error:', error);
                                 });
-
-
             }
                             // Function to create a ticket element
                             function createHistoryTicket(booking) {
@@ -119,7 +123,7 @@
                                 "<p class='bookingID'>Booking ID: "+booking.id+"</p>"+
                                 "<p class='bookingID'>Booking Status: "+booking.bookingStatus+"</p>"+
                                 "</div>"+
-                                "<a href='/edit' class='herob-btn blue-btn'>Edit</a>"+
+                                "<a href='#' onclick='redirectToEditPage("+booking.id+")' class='herob-btn blue-btn'>Edit</a>" +
                                 "<a href='#'' class='hero-btn red-btn' onclick='openPopup()'>Cancel</a>"+
                                 "</div>";
                                 console.log(ticket);
@@ -184,9 +188,18 @@
 
             var queryString = new URLSearchParams(searchData).toString();
             var url = '/date?' + queryString; // Change to /date instead of /search
-
+            console.log(url);
             // Redirect to date.html with the parameters
+            
             window.location.href = url;
+        }
+
+
+        function redirectToEditPage(bookingId) {
+            var url = '/edit?bookingId=' + bookingId; // Change to /date instead of /search
+            console.log(url);
+            window.location.href = url;
+
         }
 
 

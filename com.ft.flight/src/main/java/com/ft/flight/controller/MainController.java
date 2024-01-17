@@ -106,13 +106,19 @@ public class MainController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/edit")
-    public ModelAndView edit() {
+    @RequestMapping(value = "/date")
+    public ModelAndView date() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("date.html");
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/editing-form")
+    public ModelAndView editingForm() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("editing-form.html");
         return modelAndView;
     }
-
 
     //register
     @PostMapping("/register")
@@ -181,11 +187,12 @@ public class MainController {
         @RequestParam String date,
         @RequestParam String source,
         @RequestParam String destination) {
-            logger.info("Received search request with date: {}, source: {}, destination: {}", date, source, destination);
+        logger.info("Received search request with date: {}, source: {}, destination: {}", date, source, destination);
         Map<String, Object> response = new HashMap<>();
         List<Flight> flights = flightService.searchFlightsByDateAndSourceAndDestination(date, source, destination);
         response.put("redirect", "/date"); // Specify the redirect URL
         response.put("flights", flights);
+        System.out.println(response);
         return ResponseEntity.ok(response);
     }
 
@@ -216,12 +223,7 @@ public class MainController {
     
 
 
-    @RequestMapping(value = "/date")
-    public ModelAndView date() {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("date.html");
-        return modelAndView;
-    }
+
 
     //date.html
     @GetMapping("/fetchFlight/{flightId}")
@@ -301,18 +303,18 @@ public class MainController {
 
     //fetch booking history by user id
     @GetMapping("/history")
-    public ResponseEntity<List<Booking>> getBookingHistory(HttpSession session) {
+    public ResponseEntity<Map<String,Object>> getBookingHistory(HttpSession session) {
+        Map<String, Object> response = new HashMap<>();
         Long userId = (Long) session.getAttribute("userId");
         
         if (userId == null) {
-            // Handle the case where the user ID is not present in the session
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            response.put("message", "Please Login");
+            return ResponseEntity.badRequest().body(response);// Handle the case where the user ID is not present in the session
         }
 
         List<Booking> bookingHistory = bookingService.getBookingHistoryByUserId(userId);
-
-
-        return ResponseEntity.ok(bookingHistory);
+        response.put("bookingHistory", bookingHistory);
+        return ResponseEntity.ok(response);
     }
     
     @GetMapping("/flights/{flightId}")
@@ -326,7 +328,48 @@ public class MainController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @GetMapping("/edit")
+    public ModelAndView editBooking(@RequestParam Long bookingId) {
+        ModelAndView modelAndView = new ModelAndView("editing-form");
+        // Fetch and set the booking data
+        Booking yourBookingData = bookingService.getBookingById(bookingId);
+        modelAndView.addObject("booking", yourBookingData);
+        return modelAndView;
+    }
+
+    @GetMapping("/editinit")
+    public ResponseEntity<Map<String, Object>> editinitBooking(@RequestParam Long bookingId) {
+        Map<String, Object> response = new HashMap<>();
+        Booking booking = bookingService.getBookingById(bookingId);
+
+        response.put("booking", booking);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/save/{bookingId}")
+    public ResponseEntity<Map<String,String>> saveEdit(
+        @PathVariable Long bookingId,
+        @RequestBody BookingForm bookingForm) {
+
+            Map<String, String> response = new HashMap<>();
+            // Retrieve the existing Booking from the database
+            Booking existingBooking = bookingService.getBookingById(bookingId);
+
+            // Update fields with values from the bookingForm
+            existingBooking.setPassengerName(bookingForm.getPassengerName());
+            existingBooking.setPassengerEmail(bookingForm.getPassengerEmail());
+            existingBooking.setPassengerContactNo(bookingForm.getPassengerContactNo());
+            existingBooking.setPassengerPassportNo(bookingForm.getPassengerPassportNo());
+
+            // Save the updated booking
+            bookingRepository.save(existingBooking);
+
+            response.put("Success","Booking updated successfully");
+            return ResponseEntity.ok(response);
+    }
 }
+
 class RegisterCredential {
     private String email;
     private String username;

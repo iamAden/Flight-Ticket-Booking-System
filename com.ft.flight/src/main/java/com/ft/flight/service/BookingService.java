@@ -14,6 +14,11 @@ public class BookingService {
     BookingRepository bookingRepository;
     
     public List<Booking> getBookingHistoryByUserId(Long userId) {
-        return bookingRepository.findByUserId(userId);
+        List<Booking> bookings = bookingRepository.findByUserId(userId);
+        return bookings;
+    }
+
+    public Booking getBookingById(Long bookingId) {
+        return bookingRepository.findById(bookingId).orElse(null);
     }
 }

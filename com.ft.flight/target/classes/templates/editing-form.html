@@ -23,20 +23,22 @@
 </head>
 <body>
     <div class="container"><!--container-->
-
-        <form class="form-group" id="bookingForm"><!--form-->
+        
+        <form class="form-group" id="editForm"><!--form-->
 
             <div class="booking-form"><!--form-->
                 <h1 class="text-center">FlightHub Editing Form</h1>
-                <h2 class="text-white">Personal Details</h2>
+                <h2 class="text-white">Edit Personal Details</h2>
 
-                <div id="input"><!--input-->
-                    <input type="text" id="input-group" placeholder="Full Name" >
-                    <input type="text" id="input-group" placeholder="Phone Number" >
-                    <input type="email" id="input-group" placeholder="Email" >
-                    <input type="text" id="input-group" placeholder="Passport Number">
+                <div class="input-field"><!--input-->
+                    <input type="text" id="passengerName" class="input" placeholder="Full Name" >
+                    <input type="text" id="passengerContactNo" class="input" placeholder="Phone Number" >
+                    <input type="email" id="passengerEmail" class="input" placeholder="Email" >
+                    <input type="text" id="passengerPassportNo" class="input" placeholder="Passport Number">
+                    <input type="hidden" id="changesMade" value="false" />
                 </div><!--input-->
-                <button type="submit" class="hero-btn .red-btn" onclick="openPopup()">Save</button>
+                <button type="submit" class="hero-btn .red-btn" onclick="saveChanges()">Save</button>
+                
                 <button type="button" class="hero-btn .red-btn" onclick="directBackPreviousPage()">Cancel</button>
                 
                 <div class="popup" id="popupSuccess">
@@ -49,20 +51,99 @@
             </div><!--form-->
 
          </form><!--form-->
+         <script>
+            // Fetch and populate data
+            document.addEventListener('DOMContentLoaded', function (){
+                event.preventDefault();
+                var currentUrl = window.location.href;
 
-    </div><!--container-->
+                // Use a regular expression to match the 'bookingId' parameter
+                var match = currentUrl.match(/[?&]bookingId=([^&]*)/);
 
-    <script>
-    let popup = document.getElementById("popup"); 
+                // Extract the bookingId from the match
+                var bookingId = match ? match[1] : null;
+
+                // Log the extracted bookingId
+                console.log("Booking id:", bookingId);
+
+                if (bookingId!=null) {
+                    var url = '/editinit?bookingId=' + bookingId;
+
+                    fetch(url)
+                        .then(response => response.json())
+                        .then(data => {
+                            var booking = data.booking;
+                            console.log(booking);
+                            document.getElementById('passengerName').value = booking.passengerName;
+                            document.getElementById('passengerContactNo').value = booking.passengerContactNo;
+                            document.getElementById('passengerEmail').value = booking.passengerEmail;
+                            document.getElementById('passengerPassportNo').value = booking.passengerPassportNo;
+                        })
+                        .catch(error => {
+                            console.error('Error fetching data:', error);
+                        });
+                } else {
+                    console.log("No bookingId found in the URL.");
+                }
+            });
+
+            // Save changes function
+            function saveChanges() {
+                event.preventDefault();
+                    console.log("haluuu");
+
+                        console.log("got change ma");
+                        // Get the updated values from the form
+                        var updatedData = {
+                            passengerName: document.getElementById('passengerName').value,
+                            passengerContactNo: document.getElementById('passengerContactNo').value,
+                            passengerEmail: document.getElementById('passengerEmail').value,
+                            passengerPassportNo: document.getElementById('passengerPassportNo').value
+                        };
+
+                        var currentUrl = window.location.href;
+
+                        // Use a regular expression to match the 'bookingId' parameter
+                        var match = currentUrl.match(/[?&]bookingId=([^&]*)/);
+                        console.log(match);
+                        // Extract the bookingId from the match
+                        var bookingId = match ? match[1] : null;
+
+                        
+                        var url = '/save/'+bookingId;
+                        console.log(url);
+                        // Make an AJAX request to save the changes
+                        fetch(url, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(updatedData)
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            // Handle the response from the server (e.g., display a success message)
+                            console.log('Changes saved successfully:', data);
+                            openPopup();
+                        //})
+                    //     .catch(error => {
+                    //         console.error('Error saving changes:', error);
+                    //     });
+                    // } else {
+                    //     // No changes made, you can handle this case accordingly
+                    //     console.log('No changes made.');
+                    });
+            }
+
+
+
+    let popup = document.getElementById("popup");
 
 
      // Function to open the popup
     function openPopup() {
-    //update the user information 
-
-
+    
     popupSuccess.classList.add("open-popup");
-    // Store a flag in localStorage to indicate that the popup should be open
     localStorage.setItem("popupOpen", "true");
     }
 
@@ -72,7 +153,7 @@
     // Remove the flag from localStorage when closing the popup
     localStorage.removeItem("popupOpen");
     // Redirect to the homepage
-    window.location.href = "booking.html";
+    window.location.href = "/booking";
     }
 
     // Check if the flag is present in localStorage when the page loads
@@ -83,13 +164,9 @@
     });
 
     function directBackPreviousPage() {
-        event.preventDefault(); // Prevents the form from submitting automatically
-        
-        // Perform validation here if needed
-        
-        // Redirect to the home page after successful validation
-        window.location.href = "booking.html"; // Replace "home.html" with your actual home page URL
-        }
+        event.preventDefault();
+        window.location.href = "/booking";
+    }
 
     </script>
 
