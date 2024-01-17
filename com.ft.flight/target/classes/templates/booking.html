@@ -42,13 +42,13 @@
             <div class="raw" id="searchView">
                 <div class="search-col">
                     <form onsubmit="redirectToSearchPage()">
-                        <input type="date" placeholder="When are you leaving?" required id="departureDate">
-                        <select required id="source">
+                        <input type="date" class="input-date" placeholder="When are you leaving?" required id="departureDate">
+                        <select required id="source" class="select-option">
                             <option value="" disabled selected>Select your location</option>
                             <option value="Alor Setar Airport">Alor Setar Airport</option>
                             
                         </select>
-                        <select required id="destination">
+                        <select required id="destination" class="select-option">
                             <option value="" disabled selected>Select your destination</option>
                             <option value="Kuala Lumpur International Airport">Kuala Lumpur International Airport</option>
                         </select>
@@ -116,10 +116,14 @@
                                 "<img src='"+imageSrc+"' alt='Flight Image'>"+
                                 "<div class='flight-details'>"+
                                 "<h2>Flight from "+booking.flight.source+" to "+booking.flight.destination+"</h2>"+
-                                "<p>Passenger Name: "+booking.passengerName +"</p>"+
-                                "<p>Passport Number: "+ booking.passengerPassportNo+" </p>"+
-                                "<p>Email: "+booking.passengerEmail+"</p>"+
-                                "<p>Phone Number: "+booking.passengerContactNo+"</p>"+
+                                "<h2>"+booking.flight.flightName+"</h2>"+
+                                "<p>Date: " + booking.flight.date + "</p>" +
+                                "<p>Departure: " + booking.flight.departure +
+                                "&nbsp;&nbsp;&nbsp;&nbsp;Arrival: " + booking.flight.arrival + "</p>" +
+                                "<p>Passenger Name: "+booking.passengerName +
+                                "&nbsp;&nbsp;&nbsp;&nbsp;Passport Number: "+ booking.passengerPassportNo+" </p>"+
+                                "<p>Email: "+booking.passengerEmail+
+                                "&nbsp;&nbsp;&nbsp;&nbsp;Phone Number: "+booking.passengerContactNo+"</p>"+
                                 "<p class='bookingID'>Booking ID: "+booking.id+"</p>"+
                                 "<p class='bookingID'>Booking Status: "+booking.bookingStatus+"</p>"+
                                 "</div>"+

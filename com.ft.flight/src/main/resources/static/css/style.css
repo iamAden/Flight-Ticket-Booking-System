@@ -356,6 +356,29 @@ h5{
     display: flex;
     align-items: center;
 }
+.input-date{
+    width: 300px;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    color: #555;
+    font-size: 16px;
+}
+
+/* Style for select boxes */
+.select-option {
+    width: 300px;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    color: #555;
+    font-size: 16px;
+}
+
 .search-col{
     margin-top: 20px;
     padding-top: 20px;

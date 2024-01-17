@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.ft.flight.ApplicationTests
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 7.857 s - in com.ft.flight.ApplicationTests
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 8.284 s - in com.ft.flight.ApplicationTests
