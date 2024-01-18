@@ -163,6 +163,10 @@ public class Flight {
         availableSeats--;
     }
 
+    public void addToComfirmedList(Flight flight){
+        
+    }
+
 }
 
 

@@ -290,8 +290,15 @@ public class MainController {
             bookingRepository.save(newBooking);
             // If the booking status is confirmed, decrease the available seats for the flight
             if (bookingStatus == BookingStatus.CONFIRMED) {
+                //update number of available seats
                 flight.decreaseAvailableSeats();
                 flightRepository.save(flight);
+
+                //add to confirmedList
+            }
+            else if (bookingStatus == BookingStatus.WAITING){
+                //add to waitingQueue
+
             }
 
             return ResponseEntity.status(HttpStatus.CREATED).body("{\"status\": \"" + bookingStatus + "\", \"message\": \"Booking created successfully\"}");
@@ -329,6 +336,7 @@ public class MainController {
         }
     }
 
+    //redirect to editing-page.html
     @GetMapping("/edit")
     public ModelAndView editBooking(@RequestParam Long bookingId) {
         ModelAndView modelAndView = new ModelAndView("editing-form");
@@ -338,6 +346,7 @@ public class MainController {
         return modelAndView;
     }
 
+    //initialise booking data on editing page
     @GetMapping("/editinit")
     public ResponseEntity<Map<String, Object>> editinitBooking(@RequestParam Long bookingId) {
         Map<String, Object> response = new HashMap<>();
@@ -347,6 +356,7 @@ public class MainController {
         return ResponseEntity.ok(response);
     }
 
+    //save edit booking
     @PostMapping("/save/{bookingId}")
     public ResponseEntity<Map<String,String>> saveEdit(
         @PathVariable Long bookingId,
@@ -367,6 +377,19 @@ public class MainController {
 
             response.put("Success","Booking updated successfully");
             return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("cancel/{bookingId}")
+    public ResponseEntity<Map<String, String>> cancelBooking(
+        @PathVariable Long bookingId
+    ){
+        Map<String, String> response = new HashMap<>();
+        // Retrieve the existing Booking from the database
+        Booking existingBooking = bookingService.getBookingById(bookingId);
+        existingBooking.setBookingStatus(BookingStatus.CANCELED);
+        bookingRepository.save(existingBooking);
+        response.put("Success","Booking cancled successfully");
+        return ResponseEntity.ok(response);
     }
 }
 
