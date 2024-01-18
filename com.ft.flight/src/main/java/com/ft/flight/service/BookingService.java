@@ -21,4 +21,11 @@ public class BookingService {
     public Booking getBookingById(Long bookingId) {
         return bookingRepository.findById(bookingId).orElse(null);
     }
+
+    public List<Booking> getBookingsByFlightId(Long flightId) {
+        List<Booking> bookings = bookingRepository.findByFlightId(flightId);
+        return bookings;
+    }
+
+
 }

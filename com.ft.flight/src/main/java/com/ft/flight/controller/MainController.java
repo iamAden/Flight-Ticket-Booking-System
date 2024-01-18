@@ -142,7 +142,12 @@ public class MainController {
             response.put("message", "The username has already existed!");
             return ResponseEntity.badRequest().body(response);
         }
-
+        // Validate password length and composition
+        String password = registerCredential.getPassword();
+        if (password.length() < 8 || !containsLetterAndNumber(password)) {
+            response.put("message", "Password must be at least 8 characters long and contain at least one letter and one number.");
+            return ResponseEntity.badRequest().body(response);
+        }
         user.setUsername(registerCredential.getUsername());
         user.setEmail(registerCredential.getEmail());
         user.setPassword(registerCredential.getPassword());
@@ -151,6 +156,11 @@ public class MainController {
         response.put("message","Successfully registered.");
         response.put("redirect", "/login");
         return ResponseEntity.ok(response);
+    }
+
+    private boolean containsLetterAndNumber(String password) {
+        // Check if the password contains at least one letter and one number
+        return password.matches(".*[a-zA-Z].*") && password.matches(".*\\d.*");
     }
 
     //login
@@ -321,20 +331,13 @@ public class MainController {
 
         List<Booking> bookingHistory = bookingService.getBookingHistoryByUserId(userId);
         response.put("bookingHistory", bookingHistory);
+
+
+
+
         return ResponseEntity.ok(response);
     }
-    
-    @GetMapping("/flights/{flightId}")
-    public ResponseEntity<Flight> getFlightById(@PathVariable Long flightId) {
-        // Assuming FlightService has a method to retrieve a flight by its ID
-        Flight flight = flightService.getFlightById(flightId);
 
-        if (flight != null) {
-            return ResponseEntity.ok(flight);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
 
     //redirect to editing-page.html
     @GetMapping("/edit")
@@ -384,12 +387,55 @@ public class MainController {
         @PathVariable Long bookingId
     ){
         Map<String, String> response = new HashMap<>();
-        // Retrieve the existing Booking from the database
+        //initialise confirmedList and waitingQueue
+        Flight flight = flightService.getFlightByBookingId(bookingId);
+
+        initialize(flight);
+
+
+        
         Booking existingBooking = bookingService.getBookingById(bookingId);
-        existingBooking.setBookingStatus(BookingStatus.CANCELED);
+        
+        //if user want to cancel COMFIRMED booking
+        if(existingBooking.getBookingStatus().equals(BookingStatus.CONFIRMED)){
+            existingBooking.setBookingStatus(BookingStatus.CANCELED);
+
+            //if no waiting queue, flight available seats increase by 1
+            if(flight.getWaitingQueue().isEmpty()){
+                flight.increaseAvailableSeats();
+            }
+            //if got waiting queue, add the first one in queue to confirmedList
+            //set status to CONFIRMED
+            else{
+                Booking booking = flight.getWaitingQueue().dequeue();
+                flight.addToConfirmedList(booking);
+                booking.setBookingStatus(BookingStatus.CONFIRMED);
+            }
+        }
+
+        //if user want to cancel WAITING booking
+        else if(existingBooking.getBookingStatus().equals(BookingStatus.WAITING)){
+            existingBooking.setBookingStatus(BookingStatus.CANCELED);
+        }
+        //update database
         bookingRepository.save(existingBooking);
         response.put("Success","Booking cancled successfully");
         return ResponseEntity.ok(response);
+    }
+
+    //initialise booking confirmedList and waitingQueue based on flightId
+    public void initialize(Flight flight) {
+        //get all the bookings of the same flightId
+        List<Booking>bookings = bookingService.getBookingsByFlightId(flight.getFlightId());
+        for (Booking booking : bookings) {
+            if (booking.getBookingStatus() == BookingStatus.CONFIRMED) {
+                flight.addToConfirmedList(booking);
+            } else if (booking.getBookingStatus() == BookingStatus.WAITING) {
+                flight.addToWaitingQueue(booking);
+            }
+        }
+        System.out.println("Confirmed List: "+flight.getConfirmedList());
+        System.out.println("Waiting Queue: "+flight.getWaitingQueue());
     }
 }
 

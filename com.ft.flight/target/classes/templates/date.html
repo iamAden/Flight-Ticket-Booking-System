@@ -82,7 +82,7 @@
                     // Function to create HTML for each card based on flight data
                     function createCardItem(flight) {
                         var cardItem = `
-                            <div class="swiper-card" onclick="handleCardClick('${flight.id}')">
+                            <div class="swiper-card" onclick="handleCardClick('${flight.date}')">
                                 <div class="card-content">
                                     <div class="date">${flight.date}</div>
                                     <div class="price"> RM ${flight.price}</div>
@@ -153,28 +153,43 @@
         
         </body>
         <script>
-            function handleCardClick(flightId) {
-                console.log('Clicked on flight with ID:', flightId);
+            function handleCardClick(flightDate) {
+                // get source and destination from current url
+                var searchParams = new URLSearchParams(window.location.search);
+               
+                var source = searchParams.get('source');
+                var destination = searchParams.get('destination');
+        
+                // Replace + with space
+                source = source.replace(/\+/g, ' ');
+                destination = destination.replace(/\+/g, ' ');
+        
+                // ... (use date, source, and destination as needed)
+        
+                
+                var url = '/search?date=' + flightDate +
+                    '&source=' + encodeURIComponent(source) +
+                    '&destination=' + encodeURIComponent(destination);
+
+                console.log(url);
 
                 // Clear existing flight items
                 var searchResultsContainer = document.getElementById('searchResultsContainer');
                 searchResultsContainer.innerHTML = '';
 
-                // Fetch new flight items based on the clicked flightId
-                // You can use the flightId to customize the query or fetch logic
-                var url = '/fetchFlight/' + encodeURIComponent(flightId);
 
                 fetch(url)
                 .then(response => response.json())
                 .then(data => {
-                    console.log("Data:",data); // Log the entire data object
-                    var flight = data.flights; // Access the flight object from the 'flights' property
-                    console.log("Flight:",flight);
-                    if (flight) {
-                        var searchResultsContainer = document.getElementById('searchResultsContainer');
-                        searchResultsContainer.innerHTML += createFlightItem(flight);
-                    }
-                })
+                            var flights = data.flights;
+                            console.log("Flights:",flights);
+                            if (flights && flights.length > 0) {
+                                var searchResultsContainer = document.getElementById('searchResultsContainer');
+                                flights.forEach(function (flight) {
+                                    searchResultsContainer.innerHTML += createFlightItem(flight);
+                                });
+                            }
+                        })
                 .catch(error => {
                     console.error('Fetch error:', error);
                 });

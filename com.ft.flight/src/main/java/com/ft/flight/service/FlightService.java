@@ -42,13 +42,16 @@ public class FlightService {
     }
 
     private LocalDate parseStringToDate(String dateString) {
-    try {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        return LocalDate.parse(dateString, formatter);
-    } catch (DateTimeParseException e) {
-        e.printStackTrace();
-        return null;
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            return LocalDate.parse(dateString, formatter);
+        } catch (DateTimeParseException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
-}
-    
+
+    public Flight getFlightByBookingId(Long bookingId) {
+        return flightRepository.findByBookingId(bookingId).orElse(null);
+    }
 }

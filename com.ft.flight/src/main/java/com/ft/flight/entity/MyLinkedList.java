@@ -41,7 +41,8 @@ public class MyLinkedList<T> {
         size++;
     }
 
-    public void add(Node<T> newNode) {
+    public void add(T data) {
+        Node<T> newNode = new Node<>(data);
         // if list is empty
         if (head == null) {
             head = tail = newNode;
@@ -50,6 +51,15 @@ public class MyLinkedList<T> {
             tail = newNode;
         }
         size++;
+    }
+
+    public void remove(T data){
+        if(contains(data)){
+            
+        }
+        else{
+
+        }
     }
 
     public T removeFirst() {
@@ -92,11 +102,4 @@ public class MyLinkedList<T> {
         System.out.println("The list is cleared.");
     }
 
-    public void combine(MyLinkedList<T> otherList) {
-        Node<T> temp = otherList.head;
-        while (temp != null) {
-            this.add(new Node<>(temp.data));
-            temp = temp.next;
-        }
-    }
 }

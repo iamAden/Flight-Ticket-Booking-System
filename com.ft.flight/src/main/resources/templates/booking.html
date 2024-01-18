@@ -128,7 +128,7 @@
                                 "<p class='bookingID'>Booking Status: "+booking.bookingStatus+"</p>"+
                                 "</div>"+
                                 "<a href='#' onclick='redirectToEditPage("+booking.id+")' class='herob-btn blue-btn'>Edit</a>" +
-                                "<a href='#'' class='hero-btn red-btn' onclick='openPopup("+booking.id+")'>Cancel</a>"+
+                                "<a href='#'' class='hero-btn red-btn' onclick='openPopup()'>Cancel</a>"+
                                 "</div>";
                                 console.log(ticket);
                                 return ticket;
@@ -139,7 +139,7 @@
                             <img src="images/question mark.jpg">
                             <h3>Confirmation</h3>
                             <p>Are you sure you want to cancel your order?</p>
-                            <button type="button" class="herob-btn blue-btn" onclick="cancelBooking()">Yes</button>
+                            <button type="button" class="herob-btn blue-btn" onclick="cancelBooking(booking.id)">Yes</button>
                             <button type="button" class="hero-btn red-btn" onclick="closePopup()">No</button>
                          
                         </div>

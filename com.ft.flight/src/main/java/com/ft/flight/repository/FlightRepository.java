@@ -14,4 +14,5 @@ public interface FlightRepository extends JpaRepository<Flight, Long> {
     List<Flight> findByDateAndSourceAndDestination(LocalDate date, String source, String destination);
     List<Flight> findBySourceAndDestination(String source, String destination);
     Optional<Flight> findById(Long id);
+    Optional<Flight> findByBookingId(Long id);
 }

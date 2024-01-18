@@ -1,5 +1,6 @@
 package com.ft.flight.entity;
 
+import jakarta.annotation.PostConstruct;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,6 +16,7 @@ import java.util.Queue;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.ft.flight.service.BookingService;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -71,19 +73,8 @@ public class Flight {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private List<Booking> bookings ;
-    
-    // Constructor or initialization method to initialize the lists
-    public Flight(List<Booking> bookings) {
-        if (bookings != null) {
-            for (Booking booking : bookings) {
-                if (booking.getBookingStatus() == BookingStatus.CONFIRMED) {
-                    confirmedList.add(new MyLinkedList.Node<>(booking));
-                } else if (booking.getBookingStatus() == BookingStatus.WAITING) {
-                    waitingQueue.enqueue(booking);
-                }
-            }
-        }
-    }
+
+
 
     // Getters and Setters
 
@@ -159,14 +150,29 @@ public class Flight {
         this.date = date;
     }
 
+    public MyLinkedList<Booking> getConfirmedList(){
+        return confirmedList;
+    }
+
+    public MyQueue<Booking> getWaitingQueue(){
+        return waitingQueue;
+    }
+
     public void decreaseAvailableSeats(){
         availableSeats--;
     }
 
-    public void addToComfirmedList(Flight flight){
-        
+    public void increaseAvailableSeats(){
+        availableSeats++;
     }
 
+    public void addToConfirmedList(Booking booking){
+        confirmedList.add(booking);
+    }
+
+    public void addToWaitingQueue(Booking booking){
+        waitingQueue.enqueue(booking);
+    }
 }
 
 
