@@ -422,9 +422,10 @@ h5{
     border-bottom: 1px solid #e0e0e0;
     padding: 15px;
     display: flex;
-    justify-content: space-between;
+    justify-content: left;
     align-items: center;
     flex-wrap: wrap; /* Allow items to wrap to the next line */
+    text-align: left;
   }
 
   .ticket img {
@@ -438,6 +439,7 @@ h5{
     margin-left: 5px;
     margin-top: 0;
     margin-bottom: 0;
+    text-align: left;
   }
 
   .flight-details h2, .flight-details p {
@@ -455,13 +457,31 @@ h5{
 
   .flight-details p {
     font-size: 14px;
+    
   }
 
   .flight-details .bookingID{
     font-size: 14px;
-    color: #4CAF50;
+    color: #0f1cd4;
   }
 
+  .flight-details .confirmed{
+    font-size: 14px;
+    color: #009805;
+    font-weight: bold;
+  }
+
+  .flight-details .waiting{
+    font-size: 14px;
+    color: #e68a00fa;
+    font-weight: bold;
+  }
+
+  .flight-details .canceled{
+    font-size: 14px;
+    color: #df0000;
+    font-weight: bold;
+  }
 
 .popup {
   width: 400px;

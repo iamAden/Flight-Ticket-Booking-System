@@ -139,28 +139,51 @@
                 //     // Default image source if the company is not matched
                 //     imageSrc = 'static/images/defaultlogo.jpg';
                 // }
+
+                //color of bookingstatus & disable button for canceled
+                let bookingStatusClass;
+                let disable;
+                if(booking.bookingStatus === 'CONFIRMED'){
+                    bookingStatusClass='confirmed';
+                    disable='';
+                }
+                else if(booking.bookingStatus === 'WAITING'){
+                    bookingStatusClass='waiting';
+                    disable='';
+                }
+                else if(booking.bookingStatus === 'CANCELED'){
+                    bookingStatusClass='canceled';
+                    disable='disabled';
+                }
+                
                 console.log("Ticket:",booking);
-                var ticket = "<div class='ticket'>"+
-                "<img src='"+imageSrc+"' alt='Flight Image'>"+
-                "<div class='flight-details'>"+
-                "<h2>Flight from "+booking.flight.source+" to "+booking.flight.destination+"</h2>"+
-                "<h2>"+booking.flight.flightName+"</h2>"+
+                var ticket = "<div class='ticket'>" +
+                "<img src='" + imageSrc + "' alt='Flight Image'>" +
+                "<div class='flight-details'>" +
+                "<h2>Flight from " + booking.flight.source + " to " + booking.flight.destination + "</h2>" +
+                "<h2>" + booking.flight.flightName + "</h2>" +
+                "<p class='bookingID'>Booking ID: " + booking.id + "</p>" +
                 "<p>Date: " + booking.flight.date + "</p>" +
                 "<p>Departure: " + booking.flight.departure +
                 "&nbsp;&nbsp;&nbsp;&nbsp;Arrival: " + booking.flight.arrival + "</p>" +
-                "<p>Passenger Name: "+booking.passengerName +
-                "&nbsp;&nbsp;&nbsp;&nbsp;Passport Number: "+ booking.passengerPassportNo+" </p>"+
-                "<p>Email: "+booking.passengerEmail+
-                "&nbsp;&nbsp;&nbsp;&nbsp;Phone Number: "+booking.passengerContactNo+"</p>"+
-                "<p class='bookingID'>Booking ID: "+booking.id+"</p>"+
-                "<p class='bookingID'>Booking Status: "+booking.bookingStatus+"</p>"+
-                "</div>"+
-                "<a href='#' onclick='redirectToEditPage("+booking.id+")' class='herob-btn blue-btn'>Edit</a>" +
-                "<a href='#' class='hero-btn red-btn' onclick='openPopup("+booking.id+")'>Cancel</a>"+
-                "</div>";
-                console.log(ticket);
-                return ticket;
-            }
+                "<p>Passenger Name: " + booking.passengerName +
+                "&nbsp;&nbsp;&nbsp;&nbsp;Passport Number: " + booking.passengerPassportNo + " </p>" +
+                "<p>Email: " + booking.passengerEmail +
+                "&nbsp;&nbsp;&nbsp;&nbsp;Phone Number: " + booking.passengerContactNo + "</p>" +
+                "<p class='" + bookingStatusClass + "'>Booking Status: " + booking.bookingStatus + "</p></div>";
+
+                // Conditionally include the buttons based on the booking status
+                if (booking.bookingStatus !== 'CANCELED') {
+                    ticket += "<a href='#' onclick='redirectToEditPage(" + booking.id + ")' class='herob-btn blue-btn'> Edit</a>" +
+                        "<a href='#' class='hero-btn red-btn' onclick='openPopup(" + booking.id + ")'>Cancel</a>";
+                }
+
+                // Close the ticket div
+                ticket += "</div>";
+
+                    console.log(ticket);
+                    return ticket;
+                }
 
 
         var navLinks = document.getElementById("navLinks");
