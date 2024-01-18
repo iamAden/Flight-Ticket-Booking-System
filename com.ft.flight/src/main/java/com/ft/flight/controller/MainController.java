@@ -382,7 +382,7 @@ public class MainController {
             return ResponseEntity.ok(response);
     }
 
-    @GetMapping("cancel/{bookingId}")
+    @DeleteMapping("cancel/{bookingId}")
     public ResponseEntity<Map<String, String>> cancelBooking(
         @PathVariable Long bookingId
     ){

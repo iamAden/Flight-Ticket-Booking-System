@@ -63,93 +63,22 @@
             <div class="raw" id="historyView" style="display: none;">
                 <div class="search-col">
                     <div class="search-results" id="historyResultsContainer">
-                        
-                        <script>
-                            function viewHistory() {
-
-                                // Clear existing booking items
-                                var historyResultsContainer = document.getElementById('historyResultsContainer');
-                                historyResultsContainer.innerHTML = '';
-
-                                // fetch bookings based on userId
-                                var url = '/history'
-
-                                fetch(url)
-                                .then(response => response.json())
-                                .then(data => {
-                                    console.log("Data:", data); // Log the entire data object
-                                    var bookings = data.bookingHistory;
-                                    if (bookings) {
-                                        var historyResultsContainer = document.getElementById('historyResultsContainer');
-                                        bookings.forEach(function (booking) {
-                                            console.log("Booking:", booking); // Log
-                                            historyResultsContainer.innerHTML += createHistoryTicket(booking);
-                                        });
-                                    }
-                                    else {
-                                        // Handle other cases, e.g., display an error message
-                                        console.error('Error:', data.message);
-                                        // display it on the page
-                                        alert('Error: ' + data.message);
-                                    }
-                                })
-                                .catch(error => {
-                                    console.error('Fetch error:', error);
-                                });
-            }
-                            // Function to create a ticket element
-                            function createHistoryTicket(booking) {
-                                // Determine the image source based on the company
-                                let imageSrc;
-                                if (booking.flight.company === 'AirAsia') {
-                                    imageSrc = 'images/flight04.jpg';
-                                }
-                                // else if (data.company === 'AnotherCompany') {
-                                //     // Add more conditions for other companies if needed
-                                //     imageSrc = 'static/images/anothercompanylogo.jpg';
-                                // } else {
-                                //     // Default image source if the company is not matched
-                                //     imageSrc = 'static/images/defaultlogo.jpg';
-                                // }
-                                console.log("Ticket:",booking);
-                                var ticket = "<div class='ticket'>"+
-                                "<img src='"+imageSrc+"' alt='Flight Image'>"+
-                                "<div class='flight-details'>"+
-                                "<h2>Flight from "+booking.flight.source+" to "+booking.flight.destination+"</h2>"+
-                                "<h2>"+booking.flight.flightName+"</h2>"+
-                                "<p>Date: " + booking.flight.date + "</p>" +
-                                "<p>Departure: " + booking.flight.departure +
-                                "&nbsp;&nbsp;&nbsp;&nbsp;Arrival: " + booking.flight.arrival + "</p>" +
-                                "<p>Passenger Name: "+booking.passengerName +
-                                "&nbsp;&nbsp;&nbsp;&nbsp;Passport Number: "+ booking.passengerPassportNo+" </p>"+
-                                "<p>Email: "+booking.passengerEmail+
-                                "&nbsp;&nbsp;&nbsp;&nbsp;Phone Number: "+booking.passengerContactNo+"</p>"+
-                                "<p class='bookingID'>Booking ID: "+booking.id+"</p>"+
-                                "<p class='bookingID'>Booking Status: "+booking.bookingStatus+"</p>"+
-                                "</div>"+
-                                "<a href='#' onclick='redirectToEditPage("+booking.id+")' class='herob-btn blue-btn'>Edit</a>" +
-                                "<a href='#'' class='hero-btn red-btn' onclick='openPopup()'>Cancel</a>"+
-                                "</div>";
-                                console.log(ticket);
-                                return ticket;
-                            }
-
-                        </script>
-                        <div class="popup" id="popupSuccess">
-                            <img src="images/question mark.jpg">
-                            <h3>Confirmation</h3>
-                            <p>Are you sure you want to cancel your order?</p>
-                            <button type="button" class="herob-btn blue-btn" onclick="cancelBooking(booking.id)">Yes</button>
-                            <button type="button" class="hero-btn red-btn" onclick="closePopup()">No</button>
-                         
                         </div>
-            </div>
+                    <div class="popup" id="popupSuccess">
+                        <img src="images/question mark.jpg">
+                        <h3>Confirmation</h3>
+                        <p>Are you sure you want to cancel your booking?</p>
+                        <button type="button" class="herob-btn blue-btn" onclick="cancelBooking()">Yes</button>
+                        <button type="button" class="hero-btn red-btn" onclick="closePopup()">No</button>
+                    </div>
+                        
+
 
 
         </section>
 
-         <!------------Footer------->
-         <section class="footer">
+        <!------------Footer------->
+        <section class="footer">
             <h4>About Us</h4>
             <p>FlightHub is a project developed for WIA1002  Data Structure <br>
                 using SpringBoot, MySQL, and HTML.</p>
@@ -161,9 +90,79 @@
             <p>Made with <i class="fa fa-heart-o"></i> by DS Group 40</p>
         </section>
 
-
-        <!-----------JavaScriptfor Toggle Menu-------->
         <script>
+            function viewHistory() {
+
+                // Clear existing booking items
+                var historyResultsContainer = document.getElementById('historyResultsContainer');
+                historyResultsContainer.innerHTML = '';
+
+                // fetch bookings based on userId
+                var url = '/history'
+
+                fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Data:", data); // Log the entire data object
+                    var bookings = data.bookingHistory;
+                    if (bookings) {
+                        var historyResultsContainer = document.getElementById('historyResultsContainer');
+                        bookings.forEach(function (booking) {
+                            console.log("Booking:", booking); // Log
+                            historyResultsContainer.innerHTML += createHistoryTicket(booking);
+                        });
+                    }
+                    else {
+                        // Handle other cases, e.g., display an error message
+                        console.error('Error:', data.message);
+                        // display it on the page
+                        alert('Error: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Fetch error:', error);
+                });
+            }
+
+            // Function to create a ticket element
+            function createHistoryTicket(booking) {
+                
+                // Determine the image source based on the company
+                let imageSrc;
+                if (booking.flight.company === 'AirAsia') {
+                    imageSrc = 'images/flight04.jpg';
+                }
+                // else if (data.company === 'AnotherCompany') {
+                //     // Add more conditions for other companies if needed
+                //     imageSrc = 'static/images/anothercompanylogo.jpg';
+                // } else {
+                //     // Default image source if the company is not matched
+                //     imageSrc = 'static/images/defaultlogo.jpg';
+                // }
+                console.log("Ticket:",booking);
+                var ticket = "<div class='ticket'>"+
+                "<img src='"+imageSrc+"' alt='Flight Image'>"+
+                "<div class='flight-details'>"+
+                "<h2>Flight from "+booking.flight.source+" to "+booking.flight.destination+"</h2>"+
+                "<h2>"+booking.flight.flightName+"</h2>"+
+                "<p>Date: " + booking.flight.date + "</p>" +
+                "<p>Departure: " + booking.flight.departure +
+                "&nbsp;&nbsp;&nbsp;&nbsp;Arrival: " + booking.flight.arrival + "</p>" +
+                "<p>Passenger Name: "+booking.passengerName +
+                "&nbsp;&nbsp;&nbsp;&nbsp;Passport Number: "+ booking.passengerPassportNo+" </p>"+
+                "<p>Email: "+booking.passengerEmail+
+                "&nbsp;&nbsp;&nbsp;&nbsp;Phone Number: "+booking.passengerContactNo+"</p>"+
+                "<p class='bookingID'>Booking ID: "+booking.id+"</p>"+
+                "<p class='bookingID'>Booking Status: "+booking.bookingStatus+"</p>"+
+                "</div>"+
+                "<a href='#' onclick='redirectToEditPage("+booking.id+")' class='herob-btn blue-btn'>Edit</a>" +
+                "<a href='#' class='hero-btn red-btn' onclick='openPopup("+booking.id+")'>Cancel</a>"+
+                "</div>";
+                console.log(ticket);
+                return ticket;
+            }
+
+
         var navLinks = document.getElementById("navLinks");
         function showMenu(){
             navLinks.style.right = "0";
@@ -177,7 +176,6 @@
                     
         // Set the minimum attribute of the input element to today's date
         document.getElementById("departureDate").setAttribute("min", today);
-
 
         //submit search inputs
         function redirectToSearchPage() {
@@ -229,22 +227,76 @@
             searchView.style.display = "block";
         }
 
-        let popup = document.getElementById("popup"); 
+        let popup = document.getElementById("popupSucess");
 
+        let rememberedBookingId;
+
+        function rememberBookingId(bookingId){
+            rememberedBookingId= bookingId;
+        }
         // Function to open the popup to display successful cancel booking
-        function openPopup() {
-        popupSuccess.classList.add("open-popup");
-        // Store a flag in localStorage to indicate that the popup should be open
-        localStorage.setItem("popupOpen", "true");
+        function openPopup(bookingId) {
+            event.preventDefault();
+            rememberBookingId(bookingId);
+            let popupSuccess = document.getElementById("popupSuccess");
+
+            if (popupSuccess) {
+                // Your code to open the popup using bookingId
+                console.log("Opening popup for booking id: " + bookingId);
+                rememberedBookingId = bookingId;
+                popupSuccess.classList.add("open-popup");
+                // Store a flag in localStorage to indicate that the popup should be open
+                localStorage.setItem("popupOpen", "true");
+            } else {
+                console.error("Element with id 'popupSuccess' not found");
+            }
         }
 
+        // Function to cancel the booking using fetch
         function cancelBooking() {
-        popupSuccess.classList.remove("open-popup");
-        // Remove the flag from localStorage when closing the popup
-        localStorage.removeItem("popupOpen");
-        
-        var url = '/edit?bookingId=' + bookingId;
-        window.location.href = url;
+            event.preventDefault();
+            var url = '/cancel/' + rememberedBookingId;
+            console.log("Canceling booking with id: " + rememberedBookingId);
+
+            // Define the URL for canceling the booking
+            var url = '/cancel/' + rememberedBookingId;
+
+            // Use fetch to send a DELETE request to the server
+            fetch(url, {
+                method: 'DELETE',
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                // Successful cancellation
+                console.log('Booking canceled successfully');
+                return response.json();
+            })
+            .then(data => {
+                // Handle the response data as needed
+                console.log(data);
+
+                // Close the popup and perform additional actions
+                let popupSuccess = document.getElementById("popupSuccess");
+                popupSuccess.classList.remove("open-popup");
+                localStorage.removeItem("popupOpen");
+                closePopupDeleteBooking();
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+                // Handle errors or display an error message
+            });
+        }
+
+
+
+        function closePopupDeleteBooking() {
+            popupSuccess.classList.remove("open-popup");
+            // Remove the flag from localStorage when closing the popup
+            localStorage.removeItem("popupOpen");
+            // Redirect to the homepage
+            window.location.href = "/booking";
         }
 
         // Function to close the popup
@@ -256,15 +308,12 @@
         window.location.href = "/booking";
         }
         
-    // Check if the flag is present in localStorage when the page loads
-    document.addEventListener("DOMContentLoaded", function () {
-        if (localStorage.getItem("popupOpen") === "true") {
-            openPopup();
+        // Check if the flag is present in localStorage when the page loads
+        document.addEventListener("DOMContentLoaded", function () {
+            if (localStorage.getItem("popupOpen") === "true") {
+                openPopup();
             }
         });
        </script>
-
-
-       
     </body>
 </html>

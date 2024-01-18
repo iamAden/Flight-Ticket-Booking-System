@@ -28,6 +28,8 @@ public class Booking  {
     private User user;
 
     @ManyToOne
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @JoinColumn(name = "flight", nullable = false)
     private Flight flight;
 

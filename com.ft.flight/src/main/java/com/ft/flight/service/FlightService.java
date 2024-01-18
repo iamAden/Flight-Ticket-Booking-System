@@ -52,6 +52,6 @@ public class FlightService {
     }
 
     public Flight getFlightByBookingId(Long bookingId) {
-        return flightRepository.findByBookingId(bookingId).orElse(null);
+        return flightRepository.findByBookings_Id(bookingId).orElse(null);
     }
 }
