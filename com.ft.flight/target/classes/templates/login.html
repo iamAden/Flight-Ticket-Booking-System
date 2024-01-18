@@ -10,7 +10,8 @@
         <link rel="icon" href="images/logoP.png" type="image/png">
     </head>
     <body>
-        <section class="login-header">
+
+    <section class="login-header">
             <div class="container">
                 <div class="signin-signup">
                     <form action="#" class="sign-in-form" id="loginForm">
@@ -26,7 +27,7 @@
                         <input type="submit" id="loginButton" value="Login" class="herob-btn blue-btn">
                         <p class="account-text">Don't have an account? <a href="#" id="signUp2">Sign up</a></p>
                     </form>
-                    <form action="#" class="sign-up-form" id="registerForm">
+                    <form action="#" class="sign-up-form" id="registerForm" onsubmit="validateRegisterForm()">
                         <h2 class="title">Register</h2>
                         <div class="input-field">
                             <i class="fa fa-user"></i>
@@ -69,6 +70,30 @@
 
 
             <script>
+                function validateRegisterForm() {
+                var password = document.getElementById("password").value;
+                var email = document.getElementById("email").value;
+
+                // Password validation: Minimum 8 characters, at least one letter, and at least one digit
+                var passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+
+                if (!password.match(passwordRegex)) {
+                    alert("Password must have 8 characters which contain at least one letter and one digit.");
+                    return false;
+                }
+
+                // Email validation
+                var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+                if (!email.match(emailRegex)) {
+                    alert("Invalid email format.");
+                    return false;
+                }
+
+                 // If both password and email are valid, the form will be submitted
+                return true;
+                }
+
                 document.getElementById('loginForm').addEventListener('submit', function (event) {
                     event.preventDefault();
 
