@@ -42,6 +42,7 @@
                 <script>
                     document.addEventListener('DOMContentLoaded', function () {
                         var searchParams = new URLSearchParams(window.location.search);
+                        var date = searchParams.get('date');
                         var source = searchParams.get('source');
                         var destination = searchParams.get('destination');
                 
@@ -49,13 +50,14 @@
                         source = source.replace(/\+/g, ' ');
                         destination = destination.replace(/\+/g, ' ');
                 
-                        var url = '/searchAllDates?source=' + encodeURIComponent(source) +
+                        var url = '/searchAllDates?date=' +encodeURIComponent(date)+
+                            '&source=' + encodeURIComponent(source) +
                             '&destination=' + encodeURIComponent(destination);
                         fetch(url)
                             .then(response => response.json())
                             .then(data => {
                                 var flights = data.flights;
-                                console.log("Response from server:", data);
+                                console.log("Response from server:", flights);
                                 if (flights && flights.length > 0) {
                                     var swiper = new Swiper('.swiper', {
                                     slidesPerView: 7,

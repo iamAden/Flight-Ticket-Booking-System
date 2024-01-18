@@ -209,27 +209,37 @@ public class MainController {
 
     @GetMapping("/searchAllDates")
     public ResponseEntity<Map<String, Object>> searchAllDates(
+            @RequestParam String date,
             @RequestParam String source,
             @RequestParam String destination) {
         Map<String, Object> response = new HashMap<>();
-        logger.info("Received search request with source: {}, destination: {}", source, destination);
-    
+        logger.info("Received search request with source: {}, destination: {}, and starting date: {}", source, destination, date);
+
+        // Parse the input date string to LocalDate
+        LocalDate startDate = LocalDate.parse(date);
+
         List<Flight> flights = flightService.searchFlightsBySourceAndDestination(source, destination);
-    
+
+        // Filter flights to include only those whose dates are equal to or after the specified date
+        flights = flights.stream()
+                .filter(flight -> flight.getDate().isEqual(startDate) || flight.getDate().isAfter(startDate))
+                .collect(Collectors.toList());
+
         // Group flights by date and find the cheapest flight for each day
         Map<LocalDate, Flight> cheapestFlights = flights.stream()
                 .collect(Collectors.toMap(Flight::getDate,
                         Function.identity(),
                         BinaryOperator.minBy(Comparator.comparingInt(Flight::getPrice))));
-    
+
         // Sort flights by date in ascending order
         List<Flight> sortedFlights = cheapestFlights.values().stream()
                 .sorted(Comparator.comparing(Flight::getDate))
                 .collect(Collectors.toList());
-    
+
         response.put("flights", sortedFlights);
         return ResponseEntity.ok(response);
     }
+
     
 
 
