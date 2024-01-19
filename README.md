@@ -1,6 +1,6 @@
 # FlightHub (DS Group 40) ✈️
 ## Question 3 - Flight Ticket Booking System
-- Features:
+### Features:
   1. Register and Login
   2. Search for flights
   3. View the cheapest flights starting from today
@@ -8,13 +8,14 @@
   5. View booking history
   6. Edit booking information
   7. Cancel bookings
-- Data Structure Implemented: custom MyLinkedList & MyQueue class
-- Tech Stack
+### Data Structure Implemented: 
+- custom MyLinkedList & MyQueue class
+### Tech Stack
   - Backend: Java Spring-boot
   - Frontend: HTML, Javascript, CSS
   - Database: phpMyAdmin MySQL
 
-## Try it
+## Try it yourself
 1. Download the repository
 - download the repository
 - extract and open folder inside IDE (vsc or intellij)
