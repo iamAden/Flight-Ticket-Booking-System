@@ -2,8 +2,8 @@
 ## Question 3 - Flight Ticket Booking System
 ### Features:
   1. Register and Login
-  2. Search for flights
-  3. View the cheapest flights starting from today
+  2. Search for flights based on date, source and destination
+  3. View the cheapest flights starting from date searched
   4. Book flights
   5. View booking history
   6. Edit booking information
