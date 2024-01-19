@@ -129,16 +129,15 @@
                 
                 // Determine the image source based on the company
                 let imageSrc;
-                if (booking.flight.company === 'AirAsia') {
+                if (flight.company === 'AirAsia') {
                     imageSrc = 'images/flight04.jpg';
                 }
-                // else if (data.company === 'AnotherCompany') {
-                //     // Add more conditions for other companies if needed
-                //     imageSrc = 'static/images/anothercompanylogo.jpg';
-                // } else {
-                //     // Default image source if the company is not matched
-                //     imageSrc = 'static/images/defaultlogo.jpg';
-                // }
+                else if (flight.company === 'Malaysia Airlines'){
+                    imageSrc = 'images/Malaysia-airline.png';
+                }
+                else if(flight.company === 'Batik Air'){
+                    imageSrc = 'images/Batik-Air.png';
+                }
 
                 //color of bookingstatus & disable button for canceled
                 let bookingStatusClass;
