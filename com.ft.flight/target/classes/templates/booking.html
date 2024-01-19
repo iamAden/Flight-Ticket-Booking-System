@@ -20,7 +20,7 @@
     <body>
         <section class="booking-header">
             <nav>
-                <a href="index.html"><img src="images/logoP.png"></a>
+                <a href="/index"><img src="images/logoP.png"></a>
                 <div class="nav-links" id="navLinks">
                     <i class="fa fa-times" onclick="hideMenu()"></i>
                     <ul>
@@ -129,13 +129,13 @@
                 
                 // Determine the image source based on the company
                 let imageSrc;
-                if (flight.company === 'AirAsia') {
+                if (booking.flight.company === 'AirAsia') {
                     imageSrc = 'images/flight04.jpg';
                 }
-                else if (flight.company === 'Malaysia Airlines'){
+                else if (booking.flight.company === 'Malaysia Airlines'){
                     imageSrc = 'images/Malaysia-airline.png';
                 }
-                else if(flight.company === 'Batik Air'){
+                else if(booking.flight.company === 'Batik Air'){
                     imageSrc = 'images/Batik-Air.png';
                 }
 
