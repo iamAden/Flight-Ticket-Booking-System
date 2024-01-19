@@ -40,3 +40,7 @@
 
 5. Seeing the website
 - open ur browser and go to localhost:8080/login
+- NOTE: if your localhost:8080 port is taken, can change the server port to 8081
+  - open application.properties file under com.ft.flight>src>main>resources>application.properties
+  - ```server.port=8081``` can change to whatever u like, eg 8081 or 8082, etc
+  - so when u go to check the website go according to your server port, eg localhost:8081/login
