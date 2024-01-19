@@ -32,10 +32,11 @@
 - open the project folder inside ur IDE (vsc/intellij)(netbeans cannot)
 - open terminal inside ur IDE
 - run ```cd com.ft.flight```
-- run ```mvn clean install``` (this command only need to execute once. after that when u wanna run the application u can just cd to com.ft.flight first, then run mvn spring0boot:run)
+- run ```mvn clean install```
+  - (this command only need to execute once. after that when u wanna run the application u can just cd to com.ft.flight first, then run mvn spring-boot:run)
 - finally, run the app ```mvn spring-boot:run```
 
-- NOTE: if mvn not executable, follow this tutorial to download maven https://www.youtube.com/watch?v=88FB8MDgScA&t=1s
+- NOTE: if mvn not executable, its because maven is not in your laptop PATH. Follow this tutorial to solve 👉 https://www.youtube.com/watch?v=88FB8MDgScA&t=1s
 - TIP: must ```cd com.ft.flight``` first, and then ```mvn spring-boot:run```
 
 5. Seeing the website
@@ -44,3 +45,4 @@
   - open application.properties file under com.ft.flight>src>main>resources>application.properties
   - ```server.port=8081``` can change to whatever u like, eg 8081 or 8082, etc
   - so when u go to check the website go according to your server port, eg localhost:8081/login
+ - TIP: localhost:8080/ won't work, u have to /login
