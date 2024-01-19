@@ -23,9 +23,9 @@
 2. NO NEED Set up database. Our database is remote now. If you wanna see our database, can:
 - go to https://www.phpmyadmin.co/
 - login using
-    server: sql12.freesqldatabase.com
-    username: sql12677284
-    password: bHImi3TK9w
+  - server: sql12.freesqldatabase.com
+  - username: sql12677284
+  - password: bHImi3TK9w
 - Note: Cannot login because max connection user is normal. Can troubleshoot by closing localhost:8080 and login again
 
 3. Running the application
