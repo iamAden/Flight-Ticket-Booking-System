@@ -14,8 +14,7 @@
 3. Running the application
     - open the project folder inside ur IDE (vsc/intellij)(netbeans cannot)
     - open terminal inside ur IDE
-    - run 
-```cd com.ft.flight```
+    - run ```cd com.ft.flight```
     - run ```mvn clean install``` (this command only need to execute once. after that when u wanna run the application u can just cd to com.ft.flight first, then run mvn spring0boot:run)
     - finally, run the app ```mvn spring-boot:run```
 
