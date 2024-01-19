@@ -15,7 +15,7 @@
   - Frontend: HTML, Javascript, CSS
   - Database: phpMyAdmin MySQL
 
-## Try it yourself
+## Try it yourself ⭐
 1. Download the repository
 - download the repository
 - extract and open folder inside IDE (vsc or intellij)
