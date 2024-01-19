@@ -26,7 +26,7 @@
   - server: sql12.freesqldatabase.com
   - username: sql12678174
   - password: rDKfS1TlXm
-- Note: Cannot login because max connection user is normal. Can troubleshoot by closing localhost:8080 and login again
+- Note: Cannot login because max connection user is normal. Can troubleshoot by closing localhost:8080 and login again or wait for a while n login again.
 
 3. Running the application
 - open the project folder inside ur IDE (vsc/intellij)(netbeans cannot)
