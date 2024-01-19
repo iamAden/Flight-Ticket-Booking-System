@@ -8,9 +8,9 @@
   5. View booking history
   6. Edit booking information
   7. Cancel bookings
-### Data Structure Implemented: 
+#### Data Structure Implemented: 
 - custom MyLinkedList & MyQueue class
-### Tech Stack
+#### Tech Stack
   - Backend: Java Spring-boot
   - Frontend: HTML, Javascript, CSS
   - Database: phpMyAdmin MySQL
