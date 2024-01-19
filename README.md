@@ -24,8 +24,8 @@
 - go to https://www.phpmyadmin.co/
 - login using
   - server: sql12.freesqldatabase.com
-  - username: sql12677284
-  - password: bHImi3TK9w
+  - username: sql12678174
+  - password: rDKfS1TlXm
 - Note: Cannot login because max connection user is normal. Can troubleshoot by closing localhost:8080 and login again
 
 3. Running the application

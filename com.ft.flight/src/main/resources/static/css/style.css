@@ -335,13 +335,15 @@ h5{
 }
 /*-----------booking--------------*/
 .booking-header{
-    height: auto;
     width: 100%;
     background-image: linear-gradient(rgba(4,9,30,0.7),rgba(4,9,30,0.7)),url(/images/airport02.jpg);
     background-position: center;
     background-size: cover;
     text-align: center;
     color: #fff;
+    height: 100%; /* Set the desired height for your scrolling section */
+    overflow: auto; /* Enable scrolling */
+    padding: 20px; /* Optional: Add padding to the content inside */
 }
 .booking-header h1{
     margin-top: 100px;
@@ -422,15 +424,37 @@ h5{
     border-bottom: 1px solid #e0e0e0;
     padding: 15px;
     display: flex;
-    justify-content: left;
-    align-items: center;
+    justify-content:space-between;
+    align-items:center;
     flex-wrap: wrap; /* Allow items to wrap to the next line */
-    text-align: left;
+
   }
 
+  .ticket .herob-btn,
+   .ticket .blue-btn,
+   .ticket .hero-btn,
+   .ticket .red-btn {
+    padding: 15px;
+    display: flex;
+    justify-content:center;
+    align-items:center;
+    flex-wrap: wrap; /* Allow items to wrap to the next line */
+    width: 80px;
+    text-align: center;
+  }
+
+  
+.ticket .herob-btn a,
+.ticket .blue-btn a,
+.ticket .hero-btn a,
+.ticket .red-btn a {
+  display: flex;
+  align-items: center;
+}
+
   .ticket img {
-    width: 100px;
-    height: 100px;
+    width: 150px;
+    height: 150px;
     object-fit: cover;
     border-radius: 8px;
   }
@@ -440,6 +464,7 @@ h5{
     margin-top: 0;
     margin-bottom: 0;
     text-align: left;
+    flex: 1;
   }
 
   .flight-details h2, .flight-details p {

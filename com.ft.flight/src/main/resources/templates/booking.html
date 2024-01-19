@@ -45,12 +45,13 @@
                         <input type="date" class="input-date" placeholder="When are you leaving?" required id="departureDate">
                         <select required id="source" class="select-option">
                             <option value="" disabled selected>Select your location</option>
-                            <option value="Alor Setar Airport">Alor Setar Airport</option>
-                            
+                            <option value="Sultan Abdul Halim Airport">Sultan Abdul Halim Airport (Alor Setar)</option>
+                            <option value="Kuala Lumpur International Airport 2">Kuala Lumpur International Airport 2 (KLIA2)</option>
                         </select>
                         <select required id="destination" class="select-option">
                             <option value="" disabled selected>Select your destination</option>
-                            <option value="Kuala Lumpur International Airport">Kuala Lumpur International Airport</option>
+                            <option value="Kuala Lumpur International Airport">Kuala Lumpur International Airport (KLIA)</option>
+                            <option value="Penang International Airport">Penang International Airport (Penang)</option>
                         </select>
                         <button type="submit" class="hero-btn">Search</button>
                     </form>
@@ -159,7 +160,8 @@
                 var ticket = "<div class='ticket'>" +
                 "<img src='" + imageSrc + "' alt='Flight Image'>" +
                 "<div class='flight-details'>" +
-                "<h2>Flight from " + booking.flight.source + " to " + booking.flight.destination + "</h2>" +
+                "<h2>Flight From " + booking.flight.source + "</h2>"+                           
+                "<h2>To " + booking.flight.destination + "</h2>" +
                 "<h2>" + booking.flight.flightName + "</h2>" +
                 "<p class='bookingID'>Booking ID: " + booking.id + "</p>" +
                 "<p>Date: " + booking.flight.date + "</p>" +
