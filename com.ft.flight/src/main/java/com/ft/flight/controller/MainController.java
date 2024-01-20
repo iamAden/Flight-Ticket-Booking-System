@@ -397,15 +397,17 @@ public class MainController {
         @PathVariable Long bookingId
     ){
         Map<String, String> response = new HashMap<>();
-        //initialise confirmedList and waitingQueue
+        
+        //get the flight data based on bookingId
         Flight flight = flightService.getFlightByBookingId(bookingId);
-
+        
+        //initialise confirmedList and waitingQueue
         initialize(flight);
 
-
-        
+        //get the bookingId that the user wants to cancel
         Booking existingBooking = bookingService.getBookingById(bookingId);
         
+        //change the status of the existingBooking
         //if user want to cancel COMFIRMED booking
         if(existingBooking.getBookingStatus().equals(BookingStatus.CONFIRMED)){
             existingBooking.setBookingStatus(BookingStatus.CANCELED);
@@ -438,14 +440,13 @@ public class MainController {
         //get all the bookings of the same flightId
         List<Booking>bookings = bookingService.getBookingsByFlightId(flight.getFlightId());
         for (Booking booking : bookings) {
+            //add CONFIRMED booking to confirmedList
             if (booking.getBookingStatus() == BookingStatus.CONFIRMED) {
                 flight.addToConfirmedList(booking);
             } else if (booking.getBookingStatus() == BookingStatus.WAITING) {
                 flight.addToWaitingQueue(booking);
             }
         }
-        System.out.println("Confirmed List: "+flight.getConfirmedList());
-        System.out.println("Waiting Queue: "+flight.getWaitingQueue());
     }
 }
 

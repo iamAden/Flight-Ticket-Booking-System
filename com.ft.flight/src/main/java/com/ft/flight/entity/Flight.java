@@ -61,12 +61,6 @@ public class Flight {
 
     @Column
     private int price;
-
-    @Transient
-    private MyLinkedList<Booking> confirmedList = new MyLinkedList<>();
-
-    @Transient
-    private MyQueue<Booking> waitingQueue = new MyQueue<>();
     
     @JsonIgnore
     @OneToMany(mappedBy = "flight")
@@ -150,20 +144,27 @@ public class Flight {
         this.date = date;
     }
 
-    public MyLinkedList<Booking> getConfirmedList(){
-        return confirmedList;
-    }
-
-    public MyQueue<Booking> getWaitingQueue(){
-        return waitingQueue;
-    }
-
     public void decreaseAvailableSeats(){
         availableSeats--;
     }
 
     public void increaseAvailableSeats(){
         availableSeats++;
+    }
+
+    //Implementation here
+    @Transient
+    private MyLinkedList<Booking> confirmedList = new MyLinkedList<>();
+
+    @Transient
+    private MyQueue<Booking> waitingQueue = new MyQueue<>();
+
+    public MyLinkedList<Booking> getConfirmedList(){
+        return confirmedList;
+    }
+
+    public MyQueue<Booking> getWaitingQueue(){
+        return waitingQueue;
     }
 
     public void addToConfirmedList(Booking booking){
