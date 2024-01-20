@@ -26,18 +26,21 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.ft.flight.entity.Booking;
 import com.ft.flight.entity.BookingStatus;
 import com.ft.flight.entity.Flight;
 import com.ft.flight.entity.User;
+import com.ft.flight.model.ContactForm;
 import com.ft.flight.repository.BookingRepository;
 import com.ft.flight.repository.FlightRepository;
 import com.ft.flight.repository.UserRepository;
 import com.ft.flight.service.FlightService;
 import com.ft.flight.service.UserService;
 import com.ft.flight.service.BookingService;
+import com.ft.flight.service.EmailService;
 
 import jakarta.servlet.http.HttpSession;
 import org.springframework.ui.Model;
