@@ -58,11 +58,12 @@
                     </div>
                 </div>
                 <div class="contact-col">
-                    <form action="" >
-                        <input type="text" placeholder="Enter your name" required>
-                        <input type="email" placeholder="Enter email address" required>
-                        <input type="text" placeholder="Enter your subject" required>
-                        <textarea rows="8" placeholder="Message" required></textarea>
+                    <form action="/submit-contact-form" method="post" id="contactForm">
+                        <!-- Your form fields here -->
+                        <input type="text" name="name" placeholder="Enter your name" required>
+                        <input type="email" name="email" placeholder="Enter email address" required>
+                        <input type="text" name="subject" placeholder="Enter your subject" required>
+                        <textarea name="message" rows="8" placeholder="Message" required></textarea>
                         <button type="submit" class="hero-btn red-btn">Send Message</button>
                     </form>
                 </div>
@@ -91,6 +92,49 @@
         function hideMenu(){
             navLinks.style.right = "-200px";
         }
+
+    document.getElementById('contactForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        var name = document.getElementsByName('name')[0].value;
+        var email = document.getElementsByName('email')[0].value;
+        var subject = document.getElementsByName('subject')[0].value;
+        var message = document.getElementsByName('message')[0].value;
+
+        var contactData = {
+            name: name,
+            email: email,
+            subject: subject,
+            message: message
+        };
+
+        fetch('/submit-contact-form', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(contactData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data || data.message === "Message sent successfully!") {
+                // Display a success message or redirect to a thank you page
+                alert('Message sent successfully!');
+                
+                // Optionally, redirect to a thank you page
+                // window.location.href = '/thank-you';
+            } else {
+                // Log the entire data object for debugging
+                console.error('Contact form error:', data);
+                alert('Contact form error: Unknown error');
+            }
+        })
+        .catch(error => {
+            // Handle fetch error
+            console.error('Fetch error:', error);
+            alert('An error occurred. Please try again.');
+        });
+    });
        </script>
     </body>
 </html>

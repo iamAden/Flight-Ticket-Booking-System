@@ -62,6 +62,28 @@ public class MainController {
     @Autowired
     private BookingService bookingService;
 
+    @Autowired
+    private EmailService emailService;
+
+    @CrossOrigin(origins = "http://your-frontend-domain")
+    @PostMapping("/submit-contact-form")
+    @ResponseBody
+    public ResponseEntity<Map<String, String>> submitContactForm(@RequestBody ContactForm contactForm) {
+        Map<String, String> response = new HashMap<>();
+        try {
+            System.out.println("contact form: " + contactForm);
+
+            // Send the email
+            emailService.sendEmail(contactForm);
+            response.put("Message", "Message sent successfully!");
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            // Handle the exception and return an error message
+            e.printStackTrace();
+            response.put("Error", "Fail sending message: " + e.getMessage());
+            return ResponseEntity.badRequest().body(response);
+        }
+    }
 
     //redirections
     @RequestMapping(value = "/login")
