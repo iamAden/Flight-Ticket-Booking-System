@@ -45,4 +45,4 @@
   - open application.properties file under com.ft.flight>src>main>resources>application.properties
   - ```server.port=8081``` can change to whatever u like, eg 8081 or 8082, etc
   - so when u go to check the website go according to your server port, eg localhost:8081/login
- - TIP: localhost:8080/ won't work, u have to /login
+ - TIP: If you can't send message inside contact, turn off your antivirus program or change to another browser
