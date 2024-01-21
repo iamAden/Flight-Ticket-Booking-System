@@ -62,12 +62,21 @@
 - **NOTE**: Cannot login because max connection user is normal. Can troubleshoot by closing localhost:8080 and login again or wait for a while n login again.
 
 ## Gallery🎨
+Login Page
 ![Login Page](/screenshots/screenshot1.png)
+Home Page
 ![Home Page](/screenshots/screenshot2.png)
+About Us
 ![About Us Page](/screenshots/screenshot3.png)
+Contact
 ![Contact Page](/screenshots/screenshot4.png)
+Search Flight
 ![Booking Page](/screenshots/screenshot5.png)
+Search Results
 ![Search Results Page](/screenshots/screenshot6.png)
+Booking Form
 ![Booking Form](/screenshots/screenshot7.png)
+Booking History
 ![Booking History](/screenshots/screenshot8.png)
+Edit Booking
 ![Edit Booking](/screenshots/screenshot9.png)
