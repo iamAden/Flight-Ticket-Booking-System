@@ -42,7 +42,7 @@
 
 ### 3. Seeing the website
 - open ur browser and go to localhost:8080/login anddd DONE!! 🥳
-  
+- Flighs are only available for February 2024, Alor Setar➡️KLIA & KLIA2➡️Penang
 **ERROR FIX**: if you are getting error localhost:8080 port is taken, there are two ways to solve this
 - Kill any running terminal
     OR
@@ -60,3 +60,14 @@
   - username: sql12678174
   - password: ㊙️(Contact us for the password)
 - **NOTE**: Cannot login because max connection user is normal. Can troubleshoot by closing localhost:8080 and login again or wait for a while n login again.
+
+## Gallery🎨
+![Login Page](/screenshots/screenshot1.jpg)
+![Home Page](/screenshots/screenshot2.jpg)
+![About Us Page](/screenshots/screenshot3.jpg)
+![Contact Page](/screenshots/screenshot4.jpg)
+![Booking Page](/screenshots/screenshot5.jpg)
+![Search Results Page](/screenshots/screenshot6.jpg)
+![Booking Form](/screenshots/screenshot7.jpg)
+![Booking History](/screenshots/screenshot8.jpg)
+![Edit Booking](/screenshots/screenshot9.jpg)
