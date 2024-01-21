@@ -36,22 +36,22 @@
   - (this command only need to execute once. after that when u wanna run the application u can just cd to com.ft.flight first, then run mvn spring-boot:run)
 - finally, run the app ```mvn spring-boot:run```
 
-- **NOTE 1**: if mvn not executable, its because maven is not in your laptop PATH. Follow this [tutorial](https://www.youtube.com/watch?v=88FB8MDgScA&t=1s) to solve 👉
-- **NOTE 2**: if ur getting surefire error, it's because of your jdk version, go [update your jdk](https://www.oracle.com/java/technologies/downloads/)
-- **TIP**: must ```cd com.ft.flight``` first, and then ```mvn spring-boot:run```
+**ERROR FIX 1**: if mvn not executable error, its because maven is not in your laptop PATH. Follow this [tutorial](https://www.youtube.com/watch?v=88FB8MDgScA&t=1s) to solve
+**ERROR FIX 2**: if ur getting surefire error, it's because of your jdk version, go [update your jdk](https://www.oracle.com/java/technologies/downloads/)
+**TIP**: must ```cd com.ft.flight``` first, and then ```mvn spring-boot:run```
 
 ### 3. Seeing the website
 - open ur browser and go to localhost:8080/login anddd DONE!! 🥳
   
-- **NOTE**: if you are getting error localhost:8080 port is taken, there are two ways to solve
-  - if you had successfully ran the application before, kill the running terminal
+**ERROR FIX**: if you are getting error localhost:8080 port is taken, there are two ways to solve this
+- Kill any running terminal
     OR
-  - if you killed the terminal but still facing the same problem, can change the server port
+- if you killed the terminal but still facing the same problem, can change the server port
     - open application.properties file under com.ft.flight>src>main>resources>application.properties
-    - ```server.port=8081``` can change to whatever u like, eg 8081 or 8082, etc
+    - ```server.port=8081``` can change to whatever u like, eg 8081 or 8082 or 8088, etc
     - so when u go to check the website go according to your server port, eg localhost:8081/login
     
- - **TIP**: If you can't send message inside contact, turn off your antivirus program or change to another browser
+**TIP**: If you can't send message inside contact, turn off your antivirus program or change to another browser
 
 (OPTIONAL, CAN SKIP) If you wanna see our remote database, can:
 - go to https://www.phpmyadmin.co/
