@@ -8,27 +8,35 @@
   5. View booking history
   6. Edit booking information
   7. Cancel bookings
+     
 #### Data Structure Implemented: 
 - custom MyLinkedList & MyQueue class
+- both classes are inside com.ft.flight>src>main>java>com>ft>flight>entity
+  
 #### Tech Stack
   - Backend: Java Spring-boot
   - Frontend: HTML, Javascript, CSS
   - Database: phpMyAdmin MySQL
 
+**Requirements** (make sure they're installed)
+1. Maven
+2. JDK 17
+3. Java Extension Pack (if you're using VSC)
+
 ## Try it yourself ⭐
-1. Download the repository
+### 1. Download the repository
 - download the repository
 - extract and open folder inside IDE (vsc or intellij)
 
-2. NO NEED Set up database. Our database is remote now. If you wanna see our database, can:
+### 2. (OPTIONAL) If you wanna see our remote database, can:
 - go to https://www.phpmyadmin.co/
 - login using
   - server: sql12.freesqldatabase.com
   - username: sql12678174
-  - password: rDKfS1TlXm
-- Note: Cannot login because max connection user is normal. Can troubleshoot by closing localhost:8080 and login again or wait for a while n login again.
+  - password: ㊙️(Contact us for the password)
+- **NOTE**: Cannot login because max connection user is normal. Can troubleshoot by closing localhost:8080 and login again or wait for a while n login again.
 
-3. Running the application
+### 3. Running the application
 - open the project folder inside ur IDE (vsc/intellij)(netbeans cannot)
 - open terminal inside ur IDE
 - run ```cd com.ft.flight```
@@ -36,13 +44,20 @@
   - (this command only need to execute once. after that when u wanna run the application u can just cd to com.ft.flight first, then run mvn spring-boot:run)
 - finally, run the app ```mvn spring-boot:run```
 
-- NOTE: if mvn not executable, its because maven is not in your laptop PATH. Follow this tutorial to solve 👉 https://www.youtube.com/watch?v=88FB8MDgScA&t=1s
-- TIP: must ```cd com.ft.flight``` first, and then ```mvn spring-boot:run```
+- **NOTE**: if mvn not executable, its because maven is not in your laptop PATH. Follow this tutorial to solve 👉 https://www.youtube.com/watch?v=88FB8MDgScA&t=1s
+- **NOTE 2**: if ur getting surefire
+- **TIP**: must ```cd com.ft.flight``` first, and then ```mvn spring-boot:run```
 
-5. Seeing the website
-- open ur browser and go to localhost:8080/login
-- NOTE: if your localhost:8080 port is taken, can change the server port to 8081
-  - open application.properties file under com.ft.flight>src>main>resources>application.properties
-  - ```server.port=8081``` can change to whatever u like, eg 8081 or 8082, etc
-  - so when u go to check the website go according to your server port, eg localhost:8081/login
- - TIP: If you can't send message inside contact, turn off your antivirus program or change to another browser
+### 5. Seeing the website
+- open ur browser and go to localhost:8080/login anddd DONE!! 🥳
+  
+- **NOTE**: if you are getting error localhost:8080 port is taken, there are two ways to solve
+  - if you had successfully ran the application before, kill the running terminal
+    OR
+  - if you killed the terminal but still facing the same problem, can change the server port
+    - open application.properties file under com.ft.flight>src>main>resources>application.properties
+    - ```server.port=8081``` can change to whatever u like, eg 8081 or 8082, etc
+    - so when u go to check the website go according to your server port, eg localhost:8081/login
+    
+ - **TIP**: If you can't send message inside contact, turn off your antivirus program or change to another browser
+
