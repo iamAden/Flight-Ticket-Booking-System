@@ -64,7 +64,7 @@
 ## Gallery🎨
 Register Page
 ![Login Page](/screenshots/screenshot10.png)
-\Login Page
+Login Page
 ![Login Page](/screenshots/screenshot1.png)
 Home Page
 ![Home Page](/screenshots/screenshot2.png)
