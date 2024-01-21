@@ -13,14 +13,14 @@
 - custom MyLinkedList & MyQueue class
 - both classes are inside com.ft.flight>src>main>java>com>ft>flight>entity
   
-#### Tech Stack
+#### Tech Stack:
   - Backend: Java Spring-boot
   - Frontend: HTML, Javascript, CSS
   - Database: phpMyAdmin MySQL
 
-**Requirements** (make sure they're installed)
-1. Maven
-2. JDK 17
+**Pre-requisites** (download and install if you haven't)
+1. [Maven](https://maven.apache.org/download.cgi) ([make sure maven is inside window's PATH, here's a tutorial to do that](https://www.youtube.com/watch?v=88FB8MDgScA&t=1s)) 
+2. JDK 17 and above
 3. Java Extension Pack (if you're using VSC)
 
 ## Try it yourself ⭐
@@ -28,15 +28,7 @@
 - download the repository
 - extract and open folder inside IDE (vsc or intellij)
 
-### 2. (OPTIONAL) If you wanna see our remote database, can:
-- go to https://www.phpmyadmin.co/
-- login using
-  - server: sql12.freesqldatabase.com
-  - username: sql12678174
-  - password: ㊙️(Contact us for the password)
-- **NOTE**: Cannot login because max connection user is normal. Can troubleshoot by closing localhost:8080 and login again or wait for a while n login again.
-
-### 3. Running the application
+### 2. Running the application
 - open the project folder inside ur IDE (vsc/intellij)(netbeans cannot)
 - open terminal inside ur IDE
 - run ```cd com.ft.flight```
@@ -44,11 +36,11 @@
   - (this command only need to execute once. after that when u wanna run the application u can just cd to com.ft.flight first, then run mvn spring-boot:run)
 - finally, run the app ```mvn spring-boot:run```
 
-- **NOTE**: if mvn not executable, its because maven is not in your laptop PATH. Follow this tutorial to solve 👉 https://www.youtube.com/watch?v=88FB8MDgScA&t=1s
-- **NOTE 2**: if ur getting surefire
+- **NOTE 1**: if mvn not executable, its because maven is not in your laptop PATH. Follow this [tutorial](https://www.youtube.com/watch?v=88FB8MDgScA&t=1s) to solve 👉
+- **NOTE 2**: if ur getting surefire error, it's because of your jdk version, go [update your jdk](https://www.oracle.com/java/technologies/downloads/)
 - **TIP**: must ```cd com.ft.flight``` first, and then ```mvn spring-boot:run```
 
-### 5. Seeing the website
+### 3. Seeing the website
 - open ur browser and go to localhost:8080/login anddd DONE!! 🥳
   
 - **NOTE**: if you are getting error localhost:8080 port is taken, there are two ways to solve
@@ -61,3 +53,10 @@
     
  - **TIP**: If you can't send message inside contact, turn off your antivirus program or change to another browser
 
+(OPTIONAL, CAN SKIP) If you wanna see our remote database, can:
+- go to https://www.phpmyadmin.co/
+- login using
+  - server: sql12.freesqldatabase.com
+  - username: sql12678174
+  - password: ㊙️(Contact us for the password)
+- **NOTE**: Cannot login because max connection user is normal. Can troubleshoot by closing localhost:8080 and login again or wait for a while n login again.
