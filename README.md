@@ -62,9 +62,8 @@
 - **NOTE**: Cannot login because max connection user is normal. Can troubleshoot by closing localhost:8080 and login again or wait for a while n login again.
 
 ## Gallery🎨
-Register Page
+Register Page/
 ![Login Page](/screenshots/screenshot10.png)
-/
 Login Page
 ![Login Page](/screenshots/screenshot1.png)
 Home Page
