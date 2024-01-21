@@ -62,12 +62,12 @@
 - **NOTE**: Cannot login because max connection user is normal. Can troubleshoot by closing localhost:8080 and login again or wait for a while n login again.
 
 ## Gallery🎨
-![Login Page](Flight-Ticket_Booking-System/screenshots/screenshot1.jpg)
-![Home Page](/screenshots/screenshot2.jpg)
-![About Us Page](/screenshots/screenshot3.jpg)
-![Contact Page](/screenshots/screenshot4.jpg)
-![Booking Page](/screenshots/screenshot5.jpg)
-![Search Results Page](/screenshots/screenshot6.jpg)
-![Booking Form](/screenshots/screenshot7.jpg)
-![Booking History](/screenshots/screenshot8.jpg)
-![Edit Booking](/screenshots/screenshot9.jpg)
+![Login Page](/screenshots/screenshot1.png)
+![Home Page](/screenshots/screenshot2.png)
+![About Us Page](/screenshots/screenshot3.png)
+![Contact Page](/screenshots/screenshot4.png)
+![Booking Page](/screenshots/screenshot5.png)
+![Search Results Page](/screenshots/screenshot6.png)
+![Booking Form](/screenshots/screenshot7.png)
+![Booking History](/screenshots/screenshot8.png)
+![Edit Booking](/screenshots/screenshot9.png)
