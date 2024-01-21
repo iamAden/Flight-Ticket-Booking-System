@@ -19,7 +19,7 @@
   - Database: phpMyAdmin MySQL
 
 **Pre-requisites** (download and install if you haven't)
-1. [Maven](https://maven.apache.org/download.cgi) ([make sure maven is inside window's PATH, here's a tutorial to do that](https://www.youtube.com/watch?v=88FB8MDgScA&t=1s)) 
+1. [Maven](https://maven.apache.org/download.cgi) (make sure maven is inside window's PATH, [here's a tutorial to do that](https://www.youtube.com/watch?v=88FB8MDgScA&t=1s)) 
 2. JDK 17 and above
 3. Java Extension Pack (if you're using VSC)
 
