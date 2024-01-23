@@ -54,13 +54,7 @@
     
 **TIP**: If you can't send message inside contact, turn off your antivirus program or change to another browser
 
-(OPTIONAL, CAN SKIP) If you wanna see our remote database, can:
-- go to https://www.phpmyadmin.co/
-- login using
-  - server: sql12.freesqldatabase.com
-  - username: sql12678174
-  - password: ㊙️(Contact us for the password)
-- **NOTE**: Cannot login because max connection user is normal. Can troubleshoot by closing localhost:8080 and login again or wait for a while n login again.
+
 
 ## Gallery🎨
 Register Page
