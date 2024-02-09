@@ -81,6 +81,8 @@
                         username: username,
                         password: password
                     };
+                    console.log('Username:', username);
+                    console.log('Password:', password);
                     fetch('/login', {
                         method: 'POST',
                         headers: {
@@ -90,6 +92,7 @@
                     })
                     .then(response => response.json())
                     .then(data => {
+                        console.log(data);
                         if (data.redirect) {
                             // Redirect to the specified URL upon successful login
                             window.location.href = data.redirect;

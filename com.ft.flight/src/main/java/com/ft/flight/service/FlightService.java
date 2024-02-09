@@ -4,14 +4,10 @@ import com.ft.flight.entity.Flight;
 import com.ft.flight.repository.FlightRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.ft.flight.entity.MyLinkedList;
 import java.util.List;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.Date;
-import java.text.ParseException;
 
 @Service
 public class FlightService {

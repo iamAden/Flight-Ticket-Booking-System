@@ -1,14 +1,10 @@
 package com.ft.flight.controller;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.function.BinaryOperator;
-import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.Objects;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,10 +15,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -71,19 +65,19 @@ public class MainController {
     @CrossOrigin(origins = "http://your-frontend-domain")
     @PostMapping("/submit-contact-form")
     @ResponseBody
-    public ResponseEntity<Map<String, String>> submitContactForm(@RequestBody ContactForm contactForm) {
-        Map<String, String> response = new HashMap<>();
+    public ResponseEntity<ResponseDTO> submitContactForm(@RequestBody ContactForm contactForm) {
+        ResponseDTO response = new ResponseDTO();
         try {
             System.out.println("contact form: " + contactForm);
 
             // Send the email
             emailService.sendEmail(contactForm);
-            response.put("Message", "Message sent successfully!");
+            response.setMessage("Message sent successfully!");
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             // Handle the exception and return an error message
             e.printStackTrace();
-            response.put("Error", "Fail sending message: " + e.getMessage());
+            response.setMessage("Fail sending message: " + e.getMessage());
             return ResponseEntity.badRequest().body(response);
         }
     }
@@ -146,40 +140,34 @@ public class MainController {
     }
 
     //register
-    @PostMapping("/register")
-    public ResponseEntity<Map<String, String>> Register(@RequestBody RegisterCredential registerCredential) {
-        Map<String, String> response = new HashMap<>();
+@PostMapping("/register")
+    public ResponseEntity<ResponseDTO> register(@RequestBody RegisterCredential registerCredential) {
+        String username = registerCredential.getUsername();
+        String email = registerCredential.getEmail();
+        String password = registerCredential.getPassword();
 
-        List<User> user_email = userRepository.findByEmail(registerCredential.getEmail());
-        List<User> user_username = userRepository.findByUsername(registerCredential.getUsername());
+        List<User> userWithEmail = userRepository.findByEmail(email);
+        List<User> userWithUsername = userRepository.findByUsername(username);
+
+        if (!userWithEmail.isEmpty() && !userWithUsername.isEmpty()) {
+            return ResponseEntity.badRequest().body(new ResponseDTO("The email and username have already existed!", null));
+        } else if (!userWithEmail.isEmpty()) {
+            return ResponseEntity.badRequest().body(new ResponseDTO("The email has already existed!", null));
+        } else if (!userWithUsername.isEmpty()) {
+            return ResponseEntity.badRequest().body(new ResponseDTO("The username has already existed!", null));
+        }
+
+        if (password.length() < 8 || !containsLetterAndNumber(password)) {
+            return ResponseEntity.badRequest().body(new ResponseDTO("Password must be at least 8 characters long and contain at least one letter and one number.", null));
+        }
 
         User user = new User();
-
-        if (!user_email.isEmpty() && !user_username.isEmpty()) {
-            response.put("message", "The email and username have already existed!");
-            return ResponseEntity.badRequest().body(response);
-        }
-        else if (!user_email.isEmpty()) {
-            response.put("message", "The email has already existed!");
-            return ResponseEntity.badRequest().body(response);
-        }
-        else if (!user_username.isEmpty()) {
-            response.put("message", "The username has already existed!");
-            return ResponseEntity.badRequest().body(response);
-        }
-        // Validate password length and composition
-        String password = registerCredential.getPassword();
-        if (password.length() < 8 || !containsLetterAndNumber(password)) {
-            response.put("message", "Password must be at least 8 characters long and contain at least one letter and one number.");
-            return ResponseEntity.badRequest().body(response);
-        }
-        user.setUsername(registerCredential.getUsername());
-        user.setEmail(registerCredential.getEmail());
-        user.setPassword(registerCredential.getPassword());
+        user.setUsername(username);
+        user.setEmail(email);
+        user.setPassword(password);
         userRepository.save(user);
-        //response.put("redirect", "/home");
-        response.put("message","Successfully registered.");
-        response.put("redirect", "/login");
+
+        ResponseDTO response = new ResponseDTO("Successfully registered.", "/login");
         return ResponseEntity.ok(response);
     }
 
@@ -188,28 +176,27 @@ public class MainController {
         return password.matches(".*[a-zA-Z].*") && password.matches(".*\\d.*");
     }
 
-    //login
+
     @PostMapping("/login")
-    public ResponseEntity<Map<String, String>> login(
-        @RequestBody LoginCredential loginCredentials,
-        HttpSession session
-        ) {
-        Map<String, String> response = new HashMap<>();
+    public ResponseEntity<ResponseDTO> login(
+            @RequestBody LoginCredential loginCredentials,
+            HttpSession session) {
+        ResponseDTO response = new ResponseDTO();
 
         List<User> users = userRepository.findByUsername(loginCredentials.getUsername());
-
         if (users.isEmpty()) {
-            response.put("message", "Unregistered Username!");
+            response.setMessage("Unregistered Username!");
             return ResponseEntity.badRequest().body(response);
         }
 
         User user = users.get(0);
         if (!user.getPassword().equals(loginCredentials.getPassword())) {
-            response.put("message", "Incorrect Password!");
+            response.setMessage("Incorrect Password!");
             return ResponseEntity.badRequest().body(response);
         }
-        session.setAttribute("userId",user.getId());
-        response.put("redirect", "/home"); // Specify the redirect URL
+
+        session.setAttribute("userId", user.getId());
+        response.setRedirect("/home"); // Specify the redirect URL
 
         return ResponseEntity.ok(response);
     }
@@ -218,26 +205,26 @@ public class MainController {
 
     //search by date, source and destination
     @GetMapping("/search")
-    public ResponseEntity<Map<String, Object>> searchFlights(
+    public ResponseEntity<ResponseDTO> searchFlights(
         @RequestParam String date,
         @RequestParam String source,
         @RequestParam String destination) {
         logger.info("Received search request with date: {}, source: {}, destination: {}", date, source, destination);
-        Map<String, Object> response = new HashMap<>();
+        
         List<Flight> flights = flightService.searchFlightsByDateAndSourceAndDestination(date, source, destination);
-        response.put("redirect", "/date"); // Specify the redirect URL
-        response.put("flights", flights);
+        ResponseDTO response = new ResponseDTO("redirect", "/date"); // Specify the redirect URL
+        response.setFlights(flights);
         System.out.println(response);
         return ResponseEntity.ok(response);
     }
 
 
     @GetMapping("/searchAllDates")
-    public ResponseEntity<Map<String, Object>> searchAllDates(
+    public ResponseEntity<ResponseDTO> searchAllDates(
             @RequestParam String date,
             @RequestParam String source,
             @RequestParam String destination) {
-        Map<String, Object> response = new HashMap<>();
+        ResponseDTO response = new ResponseDTO();
         logger.info("Received search request with source: {}, destination: {}, and starting date: {}", source, destination, date);
 
         // Parse the input date string to LocalDate
@@ -247,36 +234,34 @@ public class MainController {
 
         // Filter flights to include only those whose dates are equal to or after the specified date
         flights = flights.stream()
-                .filter(flight -> flight.getDate().isEqual(startDate) || flight.getDate().isAfter(startDate))
+        .filter(flight -> flight.getDate().isEqual(startDate) || flight.getDate().isAfter(startDate))
+        .collect(Collectors.toList());
+
+        // Find the cheapest flight for each day
+        List<Flight> cheapestFlights = flights.stream()
+                .collect(Collectors.groupingBy(Flight::getDate))
+                .values()
+                .stream()
+                .map(flightList -> flightList.stream().min(Comparator.comparingInt(Flight::getPrice)).orElse(null))
+                .filter(Objects::nonNull)
                 .collect(Collectors.toList());
 
-        // Group flights by date and find the cheapest flight for each day
-        Map<LocalDate, Flight> cheapestFlights = flights.stream()
-                .collect(Collectors.toMap(Flight::getDate,
-                        Function.identity(),
-                        BinaryOperator.minBy(Comparator.comparingInt(Flight::getPrice))));
-
         // Sort flights by date in ascending order
-        List<Flight> sortedFlights = cheapestFlights.values().stream()
+        List<Flight> sortedFlights = cheapestFlights.stream()
                 .sorted(Comparator.comparing(Flight::getDate))
                 .collect(Collectors.toList());
 
-        response.put("flights", sortedFlights);
-        return ResponseEntity.ok(response);
+                response.setFlights(sortedFlights);
+                return ResponseEntity.ok(response);
     }
-
-    
-
-
-
 
     //date.html
     @GetMapping("/fetchFlight/{flightId}")
-    public ResponseEntity<Map<String, Object>> fetchFlight(@PathVariable Long flightId) {
-        Map<String, Object> response = new HashMap<>();
+    public ResponseEntity<ResponseDTO> fetchFlight(@PathVariable Long flightId) {
+        ResponseDTO response = new ResponseDTO();
         Flight flight = flightService.getFlightById(flightId);
         System.out.println(flight);
-        response.put("flights", flight);
+        response.setFlight(flight);
 
         return ResponseEntity.ok(response);
     }
@@ -355,20 +340,17 @@ public class MainController {
 
     //fetch booking history by user id
     @GetMapping("/history")
-    public ResponseEntity<Map<String,Object>> getBookingHistory(HttpSession session) {
-        Map<String, Object> response = new HashMap<>();
+    public ResponseEntity<ResponseDTO> getBookingHistory(HttpSession session) {
+        ResponseDTO response = new ResponseDTO();
         Long userId = (Long) session.getAttribute("userId");
         
         if (userId == null) {
-            response.put("message", "Please Login");
+            response.setMessage("Please Login");
             return ResponseEntity.badRequest().body(response);// Handle the case where the user ID is not present in the session
         }
 
         List<Booking> bookingHistory = bookingService.getBookingHistoryByUserId(userId);
-        response.put("bookingHistory", bookingHistory);
-
-
-
+        response.setBookingHistory(bookingHistory);
 
         return ResponseEntity.ok(response);
     }
@@ -386,21 +368,20 @@ public class MainController {
 
     //initialise booking data on editing page
     @GetMapping("/editinit")
-    public ResponseEntity<Map<String, Object>> editinitBooking(@RequestParam Long bookingId) {
-        Map<String, Object> response = new HashMap<>();
+    public ResponseEntity<ResponseDTO> editinitBooking(@RequestParam Long bookingId) {
+        ResponseDTO response = new ResponseDTO();
         Booking booking = bookingService.getBookingById(bookingId);
 
-        response.put("booking", booking);
+        response.setBooking(booking);
         return ResponseEntity.ok(response);
     }
 
     //save edit booking
     @PostMapping("/save/{bookingId}")
-    public ResponseEntity<Map<String,String>> saveEdit(
+    public ResponseEntity<ResponseDTO> saveEdit(
         @PathVariable Long bookingId,
         @RequestBody BookingForm bookingForm) {
-
-            Map<String, String> response = new HashMap<>();
+            ResponseDTO response = new ResponseDTO();
             // Retrieve the existing Booking from the database
             Booking existingBooking = bookingService.getBookingById(bookingId);
 
@@ -413,15 +394,15 @@ public class MainController {
             // Save the updated booking
             bookingRepository.save(existingBooking);
 
-            response.put("Success","Booking updated successfully");
+            response.setMessage("Booking updated successfully");
             return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("cancel/{bookingId}")
-    public ResponseEntity<Map<String, String>> cancelBooking(
+    public ResponseEntity<ResponseDTO> cancelBooking(
         @PathVariable Long bookingId
     ){
-        Map<String, String> response = new HashMap<>();
+        ResponseDTO response = new ResponseDTO();
         
         //get the flight data based on bookingId
         Flight flight = flightService.getFlightByBookingId(bookingId);
@@ -456,7 +437,7 @@ public class MainController {
         }
         //update database
         bookingRepository.save(existingBooking);
-        response.put("Success","Booking cancled successfully");
+        response.setMessage("Booking cancled successfully");
         return ResponseEntity.ok(response);
     }
 
@@ -572,3 +553,69 @@ class BookingForm {
     }
 }
 
+
+class ResponseDTO {
+    private String message;
+    private String redirect;
+    private List<Booking> bookingHistory;
+    private List<Flight> flights;
+    private Booking booking;
+    private Flight flight;
+
+    public ResponseDTO() {
+        // Default constructor
+    }
+
+    public ResponseDTO(String message, String redirect) {
+        this.message = message;
+        this.redirect = redirect;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public String getRedirect() {
+        return redirect;
+    }
+
+    public void setRedirect(String redirect) {
+        this.redirect = redirect;
+    }
+
+    public List<Booking> getBookingHistory() {
+        return bookingHistory;
+    }
+
+    public void setBookingHistory(List<Booking> bookingHistory) {
+        this.bookingHistory = bookingHistory;
+    }
+
+    public List<Flight> getFlights() {
+        return flights;
+    }
+
+    public void setFlights(List<Flight> flights) {
+        this.flights = flights;
+    }
+
+    public Booking getBooking(){
+        return booking;
+    }
+
+    public void setBooking (Booking booking){
+        this.booking=booking;
+    }
+
+    public Flight getFlight(){
+        return flight;
+    }
+
+    public void setFlight (Flight flight){
+        this.flight=flight;
+    }
+}

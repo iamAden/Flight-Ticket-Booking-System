@@ -1,6 +1,5 @@
 package com.ft.flight.service;
 
-import com.ft.flight.entity.Booking;
 import com.ft.flight.entity.User;
 import com.ft.flight.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

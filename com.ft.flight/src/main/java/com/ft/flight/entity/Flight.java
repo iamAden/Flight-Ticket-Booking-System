@@ -1,22 +1,14 @@
 package com.ft.flight.entity;
 
-import jakarta.annotation.PostConstruct;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.ToString;
 
 import java.sql.Time;
-import java.util.Date;
-import java.util.Queue;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.ft.flight.service.BookingService;
 
 import java.time.LocalDate;
 import java.util.List;
