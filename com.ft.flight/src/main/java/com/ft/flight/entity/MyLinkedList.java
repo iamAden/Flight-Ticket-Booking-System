@@ -110,7 +110,6 @@ public class MyLinkedList<T> {
         System.out.println("The list is cleared.");
     }
     public Stream<T> stream() {
-        return Stream.iterate(head, node -> node != null, node -> node.next)
-                     .map(node -> node.data);
+        return Stream.iterate(head, node -> node != null, node -> node.next).map(node -> node.data);
     }
 }

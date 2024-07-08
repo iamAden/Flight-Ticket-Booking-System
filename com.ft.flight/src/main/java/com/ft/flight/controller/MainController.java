@@ -147,14 +147,23 @@ public class MainController {
         String email = registerCredential.getEmail();
         String password = registerCredential.getPassword();
 
-        MyLinkedList<User> userWithEmail = userRepository.findByEmail(email);
-        List<User> userWithUsername = userRepository.findByUsername(username);
+        // MyLinkedList<User> userWithEmail = userRepository.findByEmail(email);
+        // List<User> userWithUsername = userRepository.findByUsername(username);
 
-        if (!userWithEmail.isEmpty() && !userWithUsername.isEmpty()) {
-            return ResponseEntity.badRequest().body(new ResponseDTO("The email and username have already existed!", null));
-        } else if (!userWithEmail.isEmpty()) {
+        // if (!userWithEmail.isEmpty() && !userWithUsername.isEmpty()) {
+        //     return ResponseEntity.badRequest().body(new ResponseDTO("The email and username have already existed!", null));
+        // } else if (!userWithEmail.isEmpty()) {
+        //     return ResponseEntity.badRequest().body(new ResponseDTO("The email has already existed!", null));
+        // } else if (!userWithUsername.isEmpty()) {
+        //     return ResponseEntity.badRequest().body(new ResponseDTO("The username has already existed!", null));
+        // }
+
+        if (!userRepository.findByEmail(email).isEmpty() && !userRepository.findByUsername(username).isEmpty()) {
+            return ResponseEntity.badRequest()
+                    .body(new ResponseDTO("The email and username have already existed!", null));
+        } else if (!userRepository.findByEmail(email).isEmpty()) {
             return ResponseEntity.badRequest().body(new ResponseDTO("The email has already existed!", null));
-        } else if (!userWithUsername.isEmpty()) {
+        } else if (!userRepository.findByUsername(username).isEmpty()) {
             return ResponseEntity.badRequest().body(new ResponseDTO("The username has already existed!", null));
         }
 
