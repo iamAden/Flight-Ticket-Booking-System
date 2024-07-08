@@ -1,6 +1,7 @@
 package com.ft.flight.entity;
 
 import org.springframework.stereotype.Component;
+import java.util.stream.Stream;
 
 @Component
 public class MyLinkedList<T> {
@@ -28,6 +29,13 @@ public class MyLinkedList<T> {
         return this.size;
     }
 
+    public boolean isEmpty(){
+        return head==null;
+    }
+
+    public Node<T> getHead(){
+        return this.head;
+    }
     // assigning new head
     public void addFirst(Node<T> newNode) {
         // if list is empty
@@ -101,5 +109,8 @@ public class MyLinkedList<T> {
         size = 0;
         System.out.println("The list is cleared.");
     }
-
+    public Stream<T> stream() {
+        return Stream.iterate(head, node -> node != null, node -> node.next)
+                     .map(node -> node.data);
+    }
 }

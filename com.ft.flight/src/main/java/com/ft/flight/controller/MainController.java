@@ -3,8 +3,8 @@ package com.ft.flight.controller;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,18 +27,18 @@ import org.springframework.web.servlet.ModelAndView;
 import com.ft.flight.entity.Booking;
 import com.ft.flight.entity.BookingStatus;
 import com.ft.flight.entity.Flight;
+import com.ft.flight.entity.MyLinkedList;
 import com.ft.flight.entity.User;
 import com.ft.flight.model.ContactForm;
 import com.ft.flight.repository.BookingRepository;
 import com.ft.flight.repository.FlightRepository;
 import com.ft.flight.repository.UserRepository;
-import com.ft.flight.service.FlightService;
-import com.ft.flight.service.UserService;
 import com.ft.flight.service.BookingService;
 import com.ft.flight.service.EmailService;
+import com.ft.flight.service.FlightService;
+import com.ft.flight.service.UserService;
 
 import jakarta.servlet.http.HttpSession;
-import org.springframework.ui.Model;
 
 @Controller
 @RequestMapping("/")
@@ -146,7 +147,7 @@ public class MainController {
         String email = registerCredential.getEmail();
         String password = registerCredential.getPassword();
 
-        List<User> userWithEmail = userRepository.findByEmail(email);
+        MyLinkedList<User> userWithEmail = userRepository.findByEmail(email);
         List<User> userWithUsername = userRepository.findByUsername(username);
 
         if (!userWithEmail.isEmpty() && !userWithUsername.isEmpty()) {
@@ -211,7 +212,7 @@ public class MainController {
         @RequestParam String destination) {
         logger.info("Received search request with date: {}, source: {}, destination: {}", date, source, destination);
         
-        List<Flight> flights = flightService.searchFlightsByDateAndSourceAndDestination(date, source, destination);
+        MyLinkedList<Flight> flights = flightService.searchFlightsByDateAndSourceAndDestination(date, source, destination);
         ResponseDTO response = new ResponseDTO("redirect", "/date"); // Specify the redirect URL
         response.setFlights(flights);
         System.out.println(response);
@@ -221,35 +222,76 @@ public class MainController {
 
     @GetMapping("/searchAllDates")
     public ResponseEntity<ResponseDTO> searchAllDates(
-            @RequestParam String date,
+            @RequestParam LocalDate date,
             @RequestParam String source,
             @RequestParam String destination) {
         ResponseDTO response = new ResponseDTO();
         logger.info("Received search request with source: {}, destination: {}, and starting date: {}", source, destination, date);
 
-        // Parse the input date string to LocalDate
-        LocalDate startDate = LocalDate.parse(date);
+        LocalDate startDate = date;
 
-        List<Flight> flights = flightService.searchFlightsBySourceAndDestination(source, destination);
+        MyLinkedList<Flight> flights = flightService.searchFlightsBySourceAndDestination(source, destination);
 
         // Filter flights to include only those whose dates are equal to or after the specified date
-        flights = flights.stream()
-        .filter(flight -> flight.getDate().isEqual(startDate) || flight.getDate().isAfter(startDate))
-        .collect(Collectors.toList());
+        MyLinkedList<Flight> filteredFlights = new MyLinkedList<>();
+
+        MyLinkedList.Node<Flight> current = flights.getHead();
+        while (current != null) {
+            Flight flight = current.data;
+            if (flight.getDate().isEqual(startDate) || flight.getDate().isAfter(startDate)) {
+                filteredFlights.add(flight);
+            }
+            current = current.next;
+        }
 
         // Find the cheapest flight for each day
-        List<Flight> cheapestFlights = flights.stream()
-                .collect(Collectors.groupingBy(Flight::getDate))
-                .values()
-                .stream()
-                .map(flightList -> flightList.stream().min(Comparator.comparingInt(Flight::getPrice)).orElse(null))
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
+        MyLinkedList<Flight> cheapestFlights = new MyLinkedList<>();
+        current = flights.getHead();
+        while (current != null) {
+            Flight flight = current.data;
+            date = flight.getDate();
+            
+            // Check if there's already a flight for this date
+            boolean found = false;
+            MyLinkedList.Node<Flight> cheapestCurrent = cheapestFlights.getHead();
+            while (cheapestCurrent != null) {
+                Flight cheapestFlight = cheapestCurrent.data;
+                if (cheapestFlight.getDate().isEqual(date)) {
+                    found = true;
+                    if (flight.getPrice() < cheapestFlight.getPrice()) {
+                        cheapestCurrent.data = flight; // Update with cheaper flight
+                    }
+                    break;
+                }
+                cheapestCurrent = cheapestCurrent.next;
+            }
+            
+            // If no flight for this date found, add it
+            if (!found) {
+                cheapestFlights.add(flight);
+            }
+            
+            current = current.next;
+        }
 
         // Sort flights by date in ascending order
-        List<Flight> sortedFlights = cheapestFlights.stream()
-                .sorted(Comparator.comparing(Flight::getDate))
-                .collect(Collectors.toList());
+        MyLinkedList<Flight> sortedFlights = new MyLinkedList<>();
+        MyLinkedList.Node<Flight> sortedCurrent = cheapestFlights.getHead();
+        while (sortedCurrent != null) {
+            Flight flight = sortedCurrent.data;
+            if (sortedFlights.isEmpty() || flight.getDate().compareTo(sortedFlights.getHead().data.getDate()) >= 0) {
+                sortedFlights.addFirst(new MyLinkedList.Node<>(flight));
+            } else {
+                MyLinkedList.Node<Flight> temp = sortedFlights.getHead();
+                while (temp.next != null && flight.getDate().compareTo(temp.next.data.getDate()) < 0) {
+                    temp = temp.next;
+                }
+                MyLinkedList.Node<Flight> newNode = new MyLinkedList.Node<>(flight);
+                newNode.next = temp.next;
+                temp.next = newNode;
+            }
+            sortedCurrent = sortedCurrent.next;
+        }
 
                 response.setFlights(sortedFlights);
                 return ResponseEntity.ok(response);
@@ -558,7 +600,7 @@ class ResponseDTO {
     private String message;
     private String redirect;
     private List<Booking> bookingHistory;
-    private List<Flight> flights;
+    private MyLinkedList<Flight> flights;
     private Booking booking;
     private Flight flight;
 
@@ -595,11 +637,11 @@ class ResponseDTO {
         this.bookingHistory = bookingHistory;
     }
 
-    public List<Flight> getFlights() {
+    public MyLinkedList<Flight> getFlights() {
         return flights;
     }
 
-    public void setFlights(List<Flight> flights) {
+    public void setFlights(MyLinkedList<Flight> flights) {
         this.flights = flights;
     }
 
