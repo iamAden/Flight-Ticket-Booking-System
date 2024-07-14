@@ -1,6 +1,8 @@
 package com.ft.flight.entity;
 
 
+import org.springframework.stereotype.Component;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,7 +15,7 @@ import lombok.ToString;
 @Table(name="booking")
 @AllArgsConstructor
 @NoArgsConstructor
-
+@Component
 public class Booking  {
     
 

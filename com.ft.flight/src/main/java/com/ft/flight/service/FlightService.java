@@ -21,18 +21,18 @@ public class FlightService {
         return flightRepository.findById(flightId).orElse(null);
     }
 
-    public List<Flight> searchFlightsBySourceAndDestination(String source, String destination){
-        List<Flight> flights = flightRepository.findBySourceAndDestination(source, destination);
+    public MyLinkedList<Flight> searchFlightsBySourceAndDestination(String source, String destination){
+        MyLinkedList<Flight> flights = (MyLinkedList<Flight>)flightRepository.findBySourceAndDestination(source, destination);
         
         return flights;
     }
 
-    public List<Flight> searchFlightsByDateAndSourceAndDestination(String date, String source, String destination) {
+    public MyLinkedList<Flight> searchFlightsByDateAndSourceAndDestination(String date, String source, String destination) {
         // Convert the String date to java.util.Date using SimpleDateFormat
         LocalDate parsedDate = parseStringToDate(date);
         System.out.println(parsedDate);
         // Call the repository method with the converted date
-        List<Flight> flights = flightRepository.findByDateAndSourceAndDestination(parsedDate, source, destination);
+        MyLinkedList<Flight> flights = (MyLinkedList<Flight>) flightRepository.findByDateAndSourceAndDestination(parsedDate, source, destination);
         System.out.println("Found flights: " + flights);
 
         return flights;

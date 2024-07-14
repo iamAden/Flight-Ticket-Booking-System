@@ -12,12 +12,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.time.LocalDate;
 import java.util.List;
+
+import org.springframework.stereotype.Component;
 @Data
 @Entity
 @Table(name="flight")
 @AllArgsConstructor
 @NoArgsConstructor
-
+@Component
 public class Flight {
     
 
