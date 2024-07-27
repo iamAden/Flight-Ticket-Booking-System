@@ -91,35 +91,49 @@
 
       var url = '/book/' + encodeURIComponent(flightId);
 
-      fetch(url, {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(bookingData)
-      })
-      .then(response => response.json())
-      .then(data => {
-        console.log(data);
-        if (data.status === 'CONFIRMED') {
-              // Handle confirmed booking
-              showPopup('popupSuccess');
-          } else if (data.status === 'WAITING') {
-              // Handle waiting booking
-              showPopup('popupWaiting');
-          } else {
-              // Handle other cases, e.g., display an error message
-              console.error('Error:', data.message);
+fetch(url, {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(bookingData)
+})
+.then(response => {
+    if (!response.ok) {
+        // Read the response as text
+        return response.text().then(text => {
+            // Display the error message
+            alert('Error: ' + text);
+    window.location.href = "/login";
+            // Return an empty object to avoid further errors
+            return {};
 
-              // You can access the error message in data.message
-              // For example, you might want to display it on the page
-              alert('Error: ' + data.message);
-          }
-      })
-      .catch(error => {
-          // Handle fetch error
-          console.error('Fetch error:', error);
-      });
+        });
+    }
+    // Parse the JSON only if the response is successful
+    return response.json();
+})
+.then(data => {
+    // Check if data is defined and has the expected structure
+    if (data && data.status) {
+        if (data.status === 'CONFIRMED') {
+            // Handle confirmed booking
+            showPopup('popupSuccess');
+        } else if (data.status === 'WAITING') {
+            // Handle waiting booking
+            showPopup('popupWaiting');
+        } else {
+            // Handle other cases, e.g., display an error message
+            alert('Unexpected status: ' + data.status);
+
+        }
+    }
+})
+.catch(error => {
+    // Handle fetch error (e.g., network issues)
+    alert('Fetch error: ' + error.message);
+});
+
   });
 </script>
 <script>

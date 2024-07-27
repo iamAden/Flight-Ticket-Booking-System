@@ -36,9 +36,20 @@
   - (this command only need to execute once. after that when u wanna run the application u can just cd to com.ft.flight first, then run mvn spring-boot:run)
 - finally, run the app ```mvn spring-boot:run```
 
+(If you use Intellij and don't want to use terminal to run)
+- for intellij users, you can just open the project folder
+- go to Flight-Ticket-Booking-System>com.ft.flight>Application
+- then just run Application.main()
+
 **ERROR FIX 1**: if mvn not executable error, its because maven is not in your laptop PATH. Follow this [tutorial](https://www.youtube.com/watch?v=88FB8MDgScA&t=1s) to solve
 **ERROR FIX 2**: if ur getting surefire error, it's because of your jdk version, go [update your jdk](https://www.oracle.com/java/technologies/downloads/)
 **TIP**: must ```cd com.ft.flight``` first, and then ```mvn spring-boot:run```
+
+### 4. Setting up MySQL database connection
+# execute in terminal (commands below are for windows)
+# change to your mysql username & password
+ `set DB_USERNAME=your_db_username`
+ `set DB_PASSWORD=your_db_password`
 
 ### 3. Seeing the website
 - open ur browser and go to localhost:8080/login anddd DONE!! 🥳

@@ -130,20 +130,29 @@
                             '&destination=' + encodeURIComponent(destination);
                 
                         fetch(url)
-                        .then(response => response.json())
-                        .then(data => {
-                            var flights = data.flights;
-                            console.log("Flights:",flights);
-                            if (flights && flights.length > 0) {
-                                var searchResultsContainer = document.getElementById('searchResultsContainer');
-                                flights.forEach(function (flight) {
-                                    searchResultsContainer.innerHTML += createFlightItem(flight);
-                                });
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Fetch error:', error);
-                        });
+    .then(response => response.json())
+    .then(data => {
+        var flights = data.flights;
+        console.log("Flights:", flights);
+        if (flights && flights.length > 0) {
+            console.log("Hiiii");
+            var searchResultsContainer = document.getElementById('searchResultsContainer');
+            if (searchResultsContainer) {
+                flights.forEach(function (flight) {
+                    searchResultsContainer.innerHTML += createFlightItem(flight);
+                    console.log(flight);
+                });
+            } else {
+                console.log("searchResultsContainer not found");
+            }
+        } else {
+            console.log("No flights found");
+        }
+        console.log("fudge");
+    })
+    .catch(error => {
+        console.log("Error:", error);
+    });
                     });
                     
 

@@ -1,10 +1,12 @@
 package com.ft.flight.entity;
 
 import org.springframework.stereotype.Component;
+
+import java.util.*;
 import java.util.stream.Stream;
 
 @Component
-public class MyLinkedList<T> {
+public class MyLinkedList<T> implements Iterable<T>{
     public static class Node<T> {
         public T data;
         public Node<T> next;
@@ -49,7 +51,7 @@ public class MyLinkedList<T> {
         size++;
     }
 
-    public void add(T data) {
+    public boolean add(T data) {
         Node<T> newNode = new Node<>(data);
         // if list is empty
         if (head == null) {
@@ -59,15 +61,7 @@ public class MyLinkedList<T> {
             tail = newNode;
         }
         size++;
-    }
-
-    public void remove(T data){
-        if(contains(data)){
-            
-        }
-        else{
-
-        }
+        return true;
     }
 
     public T removeFirst() {
@@ -77,20 +71,19 @@ public class MyLinkedList<T> {
         return temp.data;
     }
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("[size=").append(this.size).append("]");
+//    @Override
+//    public String toString() {
+//        StringBuilder sb = new StringBuilder();
+//
+//        Node<T> temp = head;
+//        while (temp != null) {
+//            sb.append(">>").append(temp.data);
+//            temp = temp.next;
+//        }
+//        return sb.toString();
+//    }
 
-        Node<T> temp = head;
-        while (temp != null) {
-            sb.append(">>").append(temp.data);
-            temp = temp.next;
-        }
-        return sb.toString();
-    }
-
-    public boolean contains(T data) {
+    public boolean contains(Object data) {
         Node<T> temp = head;
         while (temp != null) {
             // matches
@@ -101,6 +94,12 @@ public class MyLinkedList<T> {
         // return false if list is empty
         return false;
     }
+//
+//    @Override
+//    public Iterator<T> iterator() {
+//        return null;
+//    }
+
 
     public void clear() {
         head = null;
@@ -109,7 +108,55 @@ public class MyLinkedList<T> {
         size = 0;
         System.out.println("The list is cleared.");
     }
+
+
     public Stream<T> stream() {
         return Stream.iterate(head, node -> node != null, node -> node.next).map(node -> node.data);
+    }
+
+    public List<T> toList() {
+        List<T> list = new ArrayList<>();
+        Node<T> current = head;
+        while (current != null) {
+            list.add(current.data);
+            current = current.next;
+        }
+        return list;
+    }
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        Node<T> current = head;
+        sb.append("[");
+        while (current != null) {
+            sb.append(current.data);
+            current = current.next;
+            if (current != null) {
+                sb.append(", ");
+            }
+        }
+        sb.append("]");
+        return sb.toString();
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return new MyLinkedListIterator();
+    }
+
+    private class MyLinkedListIterator implements Iterator<T> {
+        private Node<T> current = head;
+
+        @Override
+        public boolean hasNext() {
+            return current != null;
+        }
+
+        @Override
+        public T next() {
+            T data = current.data;
+            current = current.next;
+            return data;
+        }
     }
 }

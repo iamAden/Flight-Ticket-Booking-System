@@ -5,7 +5,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
-import com.ft.flight.model.ContactForm;
+import com.ft.flight.entity.ContactForm;
 
 @Service
 public class EmailService {

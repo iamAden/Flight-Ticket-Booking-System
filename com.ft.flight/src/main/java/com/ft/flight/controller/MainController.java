@@ -1,10 +1,7 @@
 package com.ft.flight.controller;
 
 import java.time.LocalDate;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +26,7 @@ import com.ft.flight.entity.BookingStatus;
 import com.ft.flight.entity.Flight;
 import com.ft.flight.entity.MyLinkedList;
 import com.ft.flight.entity.User;
-import com.ft.flight.model.ContactForm;
+import com.ft.flight.entity.ContactForm;
 import com.ft.flight.repository.BookingRepository;
 import com.ft.flight.repository.FlightRepository;
 import com.ft.flight.repository.UserRepository;
@@ -222,9 +219,11 @@ public class MainController {
         logger.info("Received search request with date: {}, source: {}, destination: {}", date, source, destination);
         
         MyLinkedList<Flight> flights = flightService.searchFlightsByDateAndSourceAndDestination(date, source, destination);
+        System.out.println("peanuts:" + flights);
+        List<Flight> flightList = flights.toList();
         ResponseDTO response = new ResponseDTO("redirect", "/date"); // Specify the redirect URL
-        response.setFlights(flights);
-        System.out.println(response);
+        response.setFlights(flightList);
+        System.out.println(flights);
         return ResponseEntity.ok(response);
     }
 
@@ -301,8 +300,8 @@ public class MainController {
             }
             sortedCurrent = sortedCurrent.next;
         }
-
-                response.setFlights(sortedFlights);
+        List<Flight> sortedFlightsList = sortedFlights.toList();
+                response.setFlights(sortedFlightsList);
                 return ResponseEntity.ok(response);
     }
 
@@ -609,7 +608,7 @@ class ResponseDTO {
     private String message;
     private String redirect;
     private List<Booking> bookingHistory;
-    private MyLinkedList<Flight> flights;
+    private List<Flight> flights;
     private Booking booking;
     private Flight flight;
 
@@ -646,11 +645,11 @@ class ResponseDTO {
         this.bookingHistory = bookingHistory;
     }
 
-    public MyLinkedList<Flight> getFlights() {
+    public List<Flight> getFlights() {
         return flights;
     }
 
-    public void setFlights(MyLinkedList<Flight> flights) {
+    public void setFlights(List<Flight> flights) {
         this.flights = flights;
     }
 

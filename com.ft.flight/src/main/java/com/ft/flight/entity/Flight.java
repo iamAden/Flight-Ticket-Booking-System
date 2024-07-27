@@ -62,7 +62,12 @@ public class Flight {
     @EqualsAndHashCode.Exclude
     private List<Booking> bookings ;
 
-
+    @Override
+    public String toString() {
+        return String.format(
+                "{\"id\":%d,\"date\":\"%s\",\"departure\":\"%s\",\"arrival\":\"%s\",\"source\":\"%s\",\"destination\":\"%s\",\"company\":\"%s\",\"availableSeats\":%d,\"flightName\":\"%s\",\"price\":%d}",
+                id, date, departure, arrival, source, destination, company, availableSeats, flightName, price);
+    }
 
     // Getters and Setters
 
