@@ -57,7 +57,7 @@ Instead, Edit Configuration and add this in the environment
 
 ### 3. Seeing the website
 - open ur browser and go to localhost:8080/login anddd DONE!! 🥳
-- Flightsprins are only available for February 2024, Alor Setar➡️KLIA & KLIA2➡️Penang
+- Flights are only available for February 2024, Alor Setar➡️KLIA & KLIA2➡️Penang
 
 **ERROR FIX**: if you are getting error localhost:8080 port is taken, there are two ways to solve this
 - Kill any running terminal
