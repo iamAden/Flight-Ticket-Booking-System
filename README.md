@@ -51,6 +51,10 @@
  `set DB_USERNAME=your_db_username`
  `set DB_PASSWORD=your_db_password`
 
+If you use IntelliJ, the steps above won't work!
+Instead, Edit Configuration and add this in the environment 
+```DB_USERNAME=your_db_username;DB_PASSWORD=your_db_password```
+
 ### 3. Seeing the website
 - open ur browser and go to localhost:8080/login anddd DONE!! 🥳
 - Flightsprins are only available for February 2024, Alor Setar➡️KLIA & KLIA2➡️Penang
